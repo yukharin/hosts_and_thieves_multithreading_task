@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world");
         System.out.println("Bye bye world");
+        System.out.println("Hello world " + inputNameFromStdin());
     }
-
+  
     public static String inputNameFromStdin() {
         System.out.println("Please enter your name here");
         String input = null;
