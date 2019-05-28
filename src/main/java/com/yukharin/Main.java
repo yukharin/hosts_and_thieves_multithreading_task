@@ -1,25 +1,39 @@
 package com.yukharin;
 
-import java.util.Scanner;
+import com.yukharin.home_types.Home;
+import com.yukharin.home_types.ItemsHome;
+import com.yukharin.items.Item;
+import com.yukharin.threads.HostThread;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world " + inputNameFromStdin());
-    }
 
-    public static String inputNameFromStdin() {
-        System.out.println("Please enter your name here");
-        String input = null;
-        String regex = "^[a-zA-Z]+$";
-        try (Scanner scanner = new Scanner(System.in)) {
-            input = scanner.nextLine();
-            while (input.isEmpty() || input == null || !input.matches(regex)) {
-                System.out.println("Name can not be empty and should have only an uppercase and lowercase characters");
-                input = scanner.nextLine();
-            }
-        } catch (Exception e) {
+    private static final int HOSTS = 10;
+    private static final int THIEVES = 10;
+    private static final int HOME_CAPACITY = 10;
+    private static final int NUMBER_OF_ITEMS_PER_HOST = 5;
+
+    public static void main(String[] args) {
+
+        Home<Item> home = new ItemsHome<>(HOME_CAPACITY);
+//        Runnable hostfRunnable = new HostThread(home, NUMBER_OF_ITEMS_PER_HOST);
+//        Runnable thiefRunnable = new ThiefThread(home);
+//        ThreadManager hosts = new ThreadManager(hostfRunnable, HOSTS);
+//        ThreadManager thieves = new ThreadManager(thiefRunnable, THIEVES);
+//        hosts.startThreads();
+//        hosts.joinThreads();
+//        thieves.startThreads();
+//        thieves.joinThreads();
+
+        Runnable runnable = new HostThread(home, 5);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return input;
+
+
     }
+
 }
