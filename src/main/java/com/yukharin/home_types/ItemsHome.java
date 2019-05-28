@@ -3,6 +3,7 @@ package com.yukharin.home_types;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class ItemsHome<T> extends AbstractHome<T> implements Home<T> {
 
@@ -28,7 +29,7 @@ public class ItemsHome<T> extends AbstractHome<T> implements Home<T> {
         synchronized (lock) {
             if (elements.size() == 0) {
                 try {
-                    lock.wait();
+                    lock.wait(TimeUnit.SECONDS.toSeconds(1));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

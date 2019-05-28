@@ -5,7 +5,6 @@ import java.util.List;
 
 public class ThreadManager {
 
-
     private List<Thread> threadList;
 
     public ThreadManager() {

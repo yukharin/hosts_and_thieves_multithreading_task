@@ -23,6 +23,7 @@ public class ThiefThread implements Runnable {
             e.printStackTrace();
         }
         thief.steal();
+        System.out.println(thief);
     }
 
 
