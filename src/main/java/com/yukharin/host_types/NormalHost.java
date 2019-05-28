@@ -16,7 +16,6 @@ public class NormalHost extends AbstractHost implements Host {
     public void put() {
         for (Item item : items) {
             this.home.put(item);
-            System.out.println(home);
         }
     }
 

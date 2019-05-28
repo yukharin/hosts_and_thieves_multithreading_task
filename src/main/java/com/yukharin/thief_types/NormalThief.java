@@ -13,9 +13,9 @@ public class NormalThief extends AbstractThief implements Thief {
 
     public void steal() {
         while (true) {
-            Object item = homeToSteal.get();
-            if (item instanceof Item) {
-                boolean flag = bag.add((Item) item);
+            Object object = homeToSteal.get();
+            if (object instanceof Item) {
+                boolean flag = bag.add((Item) object);
                 if (flag == false) {
                     break;
                 }
