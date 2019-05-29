@@ -15,7 +15,6 @@ public class Main {
     private static final int NUMBER_OF_ITEMS_PER_HOST = 5;
 
     public static void main(String[] args) {
-
         Home home = new ItemsHome<>();
         List<Thread> hosts = HostThreadFactory.createHostThreads(home, NUMBER_OF_ITEMS_PER_HOST, NUMBER_OF_HOSTS);
         List<Thread> thieves = ThiefThreadFactory.createThiefThreads(home, NUMBER_OF_THIEVES);
