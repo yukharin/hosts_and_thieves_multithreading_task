@@ -1,21 +1,15 @@
 package com.yukharin.thread_manager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadManager {
 
     private List<Thread> threadList;
 
-    public ThreadManager() {
-        threadList = new ArrayList<>();
+    public ThreadManager(final List<Thread> threads) {
+        threadList = threads;
     }
 
-    public void createThreads(Runnable runnable, int numberOfThreads) {
-        for (int i = 0; i < numberOfThreads; i++) {
-            threadList.add(new Thread(runnable));
-        }
-    }
 
     public void startThreads() {
         for (Thread thread : threadList) {

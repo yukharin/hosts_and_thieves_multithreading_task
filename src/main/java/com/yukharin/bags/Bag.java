@@ -18,7 +18,7 @@ public class Bag {
     }
 
     public boolean add(Item item) {
-        if (item.getWeight() + currentWeight > WEIGHT_LIMIT) {
+        if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
             return false;
         } else {
             items.add(item);
@@ -40,7 +40,7 @@ public class Bag {
 
 
     public String toString() {
-        return items.toString();
+        return "items " + items.toString() + ", current weight: " + currentWeight;
     }
 
 }
