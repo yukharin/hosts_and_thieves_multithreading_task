@@ -1,26 +1,29 @@
 package com.yukharin;
 
-import java.util.Scanner;
+import com.yukharin.factories.HostThreadFactory;
+import com.yukharin.factories.ThiefThreadFactory;
+import com.yukharin.home_types.Home;
+import com.yukharin.home_types.ItemsHome;
+import com.yukharin.thread_manager.ThreadManager;
+
+import java.util.List;
 
 public class Main {
+
+    private static final int NUMBER_OF_HOSTS = 3;
+    private static final int NUMBER_OF_THIEVES = 3;
+    private static final int NUMBER_OF_ITEMS_PER_HOST = 5;
+
     public static void main(String[] args) {
-        System.out.println("Bye bye world");
-        System.out.println("Hello world " + inputNameFromStdin());
+        Home home = new ItemsHome<>();
+        List<Thread> hosts = HostThreadFactory.createHostThreads(home, NUMBER_OF_ITEMS_PER_HOST, NUMBER_OF_HOSTS);
+        List<Thread> thieves = ThiefThreadFactory.createThiefThreads(home, NUMBER_OF_THIEVES);
+        ThreadManager hostManager = new ThreadManager(hosts);
+        ThreadManager thievesManager = new ThreadManager(thieves);
+        hostManager.startThreads();
+        hostManager.joinThreads();
+        thievesManager.startThreads();
+        thievesManager.joinThreads();
     }
-  
-    public static String inputNameFromStdin() {
-        System.out.println("Please enter your name here");
-        String input = null;
-        String regex = "^[a-zA-Z]+$";
-        try (Scanner scanner = new Scanner(System.in)) {
-            input = scanner.nextLine();
-            while (input.isEmpty() || input == null || !input.matches(regex)) {
-                System.out.println("Name can not be empty and should have only an uppercase and lowercase characters");
-                input = scanner.nextLine();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return input;
-    }
+
 }
