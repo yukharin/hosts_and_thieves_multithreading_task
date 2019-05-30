@@ -2,8 +2,6 @@ package com.yukharin.threads;
 
 import com.yukharin.thief_types.Thief;
 
-import java.util.concurrent.TimeUnit;
-
 public class ThiefThread implements Runnable {
 
     private static final int TIMEOUT = 2;
@@ -15,14 +13,7 @@ public class ThiefThread implements Runnable {
 
     @Override
     public void run() {
-        try {
-            TimeUnit.SECONDS.sleep(TIMEOUT);
-            synchronized (thief.getHomeToSteal()) {
-                thief.smartSteal();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        thief.steal();
     }
 }
 

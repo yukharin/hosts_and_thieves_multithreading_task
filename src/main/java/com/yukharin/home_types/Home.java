@@ -1,18 +1,14 @@
 package com.yukharin.home_types;
 
-
-import java.util.List;
-
 public interface Home<T> {
 
     void put(T element);
 
-    T get(int index);
+    T get();
 
-    T getRandomElement();
+    boolean isFull();
 
-    void sortElements();
+    boolean isEmpty();
 
-    List<T> getAllElements();
 
 }
