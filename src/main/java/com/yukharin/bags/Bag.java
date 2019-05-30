@@ -4,10 +4,8 @@ import com.yukharin.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Bag {
-
 
     private static final int WEIGHT_LIMIT = 100;
     private List<Item> items;
@@ -27,15 +25,8 @@ public class Bag {
         }
     }
 
-    public Item pickRandomItem() {
-        int size = items.size();
-        if (size > 0) {
-            Random random = new Random();
-            int randomNumber = random.nextInt(size);
-            Item randomItem = items.get(randomNumber);
-            currentWeight = currentWeight - randomItem.getWeight();
-            return randomItem;
-        } else return null;
+    public int count() {
+        return items.size();
     }
 
 

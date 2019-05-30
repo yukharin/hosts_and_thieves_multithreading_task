@@ -1,33 +1,49 @@
 package com.yukharin;
 
-import com.yukharin.factories.HostThreadFactory;
-import com.yukharin.factories.ThiefThreadFactory;
-import com.yukharin.home_types.Home;
-import com.yukharin.home_types.SynchronizedHome;
-import com.yukharin.items.Item;
-import com.yukharin.thread_manager.ThreadManager;
+import com.yukharin.homes.Home;
+import com.yukharin.host_threads.HostThread;
+import com.yukharin.hosts.Host;
+import com.yukharin.thief_threads.ThiefThread;
+import com.yukharin.thieves.Thief;
+import com.yukharin.utils.Utils;
 
-import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
-    private static final int HOME_CAPACITY = 100;
-    private static final int NUMBER_OF_HOSTS = 20;
-    private static final int NUMBER_OF_THIEVES = 10;
-    private static final int NUMBER_OF_ITEMS_PER_HOST = 5;
+    private static int HOSTS = 5;
+    private static int THIEVES = 5;
+    private static int ITEMS_PER_HOST = 3;
+    private static int TOTAL_THREADS = HOSTS + THIEVES;
+    private static Runnable startTask = new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("Start !!!");
+            Utils.printInfo();
+        }
+    };
+    public static CyclicBarrier start = new CyclicBarrier(TOTAL_THREADS, startTask);
+    private static Runnable endTask = new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("Finish !!!");
+            Utils.printInfo();
+        }
+    };
+    public static CyclicBarrier finish = new CyclicBarrier(TOTAL_THREADS, endTask);
 
     public static void main(String[] args) {
-
-        Home<Item> home = new SynchronizedHome<>(HOME_CAPACITY);
-        List<Thread> hosts = HostThreadFactory.createHostThreads(home, NUMBER_OF_ITEMS_PER_HOST, NUMBER_OF_HOSTS);
-        List<Thread> thieves = ThiefThreadFactory.createThiefThreads(home, NUMBER_OF_THIEVES);
-        ThreadManager thievesManager = new ThreadManager(thieves);
-        ThreadManager hostManager = new ThreadManager(hosts);
-        thievesManager.startThreads();
-        hostManager.startThreads();
-        hostManager.joinThreads();
-        thievesManager.joinThreads();
-
+        Home home = new Home();
+        ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
+        for (int i = 0; i < HOSTS; i++) {
+            service.submit(new HostThread(new Host(home, ITEMS_PER_HOST), start, finish));
+        }
+        for (int i = 0; i < THIEVES; i++) {
+            service.submit(new ThiefThread(new Thief(home), start, finish));
+        }
+        service.shutdown();
     }
 
 }
