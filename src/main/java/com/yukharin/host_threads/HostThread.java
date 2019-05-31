@@ -23,9 +23,7 @@ public class HostThread implements Runnable {
         if (start != null) {
             try {
                 start.await();
-                while (host.thingsCount() != 0) {
-                    host.putElement();
-                }
+                host.putItems();
                 finish.await();
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();

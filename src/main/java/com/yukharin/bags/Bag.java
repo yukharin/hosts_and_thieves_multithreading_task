@@ -4,15 +4,26 @@ import com.yukharin.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bag {
 
+    private static AtomicInteger sumValue = new AtomicInteger();
+    private static AtomicInteger sumWeight = new AtomicInteger();
     private static final int WEIGHT_LIMIT = 100;
     private List<Item> items;
     private int currentWeight;
 
     public Bag() {
-        items = new ArrayList<>();
+        this.items = new ArrayList<>();
+    }
+
+    public static int getSumValue() {
+        return sumValue.intValue();
+    }
+
+    public static int getSumWeight() {
+        return sumWeight.intValue();
     }
 
     public boolean add(Item item) {
@@ -21,6 +32,8 @@ public class Bag {
         } else {
             items.add(item);
             currentWeight += item.getWeight();
+            sumValue.addAndGet(item.getValue());
+            sumWeight.addAndGet(item.getWeight());
             return true;
         }
     }

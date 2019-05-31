@@ -1,6 +1,6 @@
 package com.yukharin.items;
 
-public class Item implements Comparable<Item> {
+public class Item {
 
     private int weight;
     private int value;
@@ -16,11 +16,6 @@ public class Item implements Comparable<Item> {
 
     public int getValue() {
         return value;
-    }
-
-    @Override
-    public int compareTo(Item item) {
-        return Integer.compare(item.getValue(), value);
     }
 
     @Override
