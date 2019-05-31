@@ -3,16 +3,14 @@ package com.yukharin.thieves;
 import com.yukharin.bags.Bag;
 import com.yukharin.homes.Home;
 import com.yukharin.items.Item;
-import com.yukharin.listeners.Listener;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 public class Thief {
 
     private Home home;
     private Bag bag;
+
 
     public Thief(Home home) {
         this.home = home;
@@ -20,21 +18,20 @@ public class Thief {
     }
 
     public void steal() {
-        List<Item> items = home.getItems();
-        Collections.sort(items);
-        Iterator<Item> iterator = items.iterator();
+        home.sortItems();
+        Iterator<Item> iterator = home.iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
             boolean flag = bag.add(item);
             if (flag == false) {
                 break;
             } else {
-                items.remove(item);
-                Listener.addThiefItem(item);
+
+                home.removeItem(item);
             }
-            System.out.println(this);
+            System.out.println(Thread.currentThread().getName() + " - Thief - stealing from home " + bag);
         }
-        Collections.shuffle(items);
+        home.shuffleItems();
     }
 
     public Home getHome() {
