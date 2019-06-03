@@ -1,42 +1,46 @@
 package com.yukharin.thieves;
 
 import com.yukharin.bags.Bag;
+import com.yukharin.comparators.ItemComparator;
 import com.yukharin.homes.Home;
 import com.yukharin.items.Item;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 public class Thief {
 
-    private Home home;
     private Bag bag;
 
 
-    public Thief(Home home) {
-        this.home = home;
+    public Thief() {
         this.bag = new Bag();
     }
 
-    public void steal() {
-        home.sortItems();
+    public void steal(Home home) {
+        Comparator<Item> itemComparator = new ItemComparator();
+        List<Item> itemsToSteal = new ArrayList<>();
         Iterator<Item> iterator = home.iterator();
         while (iterator.hasNext()) {
-            Item item = iterator.next();
+            itemsToSteal.add(iterator.next());
+        }
+        itemsToSteal.sort(itemComparator.reversed());
+        putIntoBag(home, itemsToSteal);
+    }
+
+    private void putIntoBag(Home home, List<Item> items) {
+        for (Item item : items) {
             boolean flag = bag.add(item);
             if (flag == false) {
                 break;
             } else {
-
                 home.removeItem(item);
             }
-            System.out.println(Thread.currentThread().getName() + " - Thief - stealing from home " + bag);
         }
-        home.shuffleItems();
     }
 
-    public Home getHome() {
-        return home;
-    }
 
     @Override
     public String toString() {

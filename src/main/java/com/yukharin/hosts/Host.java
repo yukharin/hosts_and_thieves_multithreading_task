@@ -25,7 +25,6 @@ public class Host {
         this.home = home;
         this.items = Utils.generateItems(count);
         generateAggregationValues(items);
-        System.out.println(Thread.currentThread().getName() + " Host class - initialization process " + items);
     }
 
     private static void generateAggregationValues(List<Item> items) {
@@ -52,6 +51,10 @@ public class Host {
             home.addItem(item);
             iterator.remove();
         }
+    }
+
+    public Home getHome() {
+        return this.home;
     }
 
     public int itemsCount() {
