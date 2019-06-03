@@ -30,9 +30,12 @@ public class ThiefThread implements Runnable {
         if (start != null) {
             try {
                 start.await();
-                semaphore.acquire(permits);
-                thief.steal(home);
-                semaphore.release(permits);
+                try {
+                    semaphore.acquire(permits);
+                    thief.steal(home);
+                } finally {
+                    semaphore.release(permits);
+                }
                 finish.await();
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
