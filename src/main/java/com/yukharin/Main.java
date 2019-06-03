@@ -7,18 +7,16 @@ import com.yukharin.thief_threads.ThiefThread;
 import com.yukharin.thieves.Thief;
 import com.yukharin.utils.Utils;
 
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Main {
 
-    private static final long TIMEOUT = 3L;
-    private static final int HOSTS = 100;
-    private static final int THIEVES = 100;
+    private static final long TIMEOUT = 2L;
+    private static final int HOSTS = 300;
+    private static final int THIEVES = 50;
     private static final int ITEMS_PER_HOST = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
+    private static final Semaphore semaphore = new Semaphore(HOSTS);
 
     private static final Runnable startTask = new Runnable() {
         @Override
@@ -46,10 +44,10 @@ public class Main {
         Home home = new Home();
         ExecutorService service = Executors.newCachedThreadPool();
         for (int i = 0; i < THIEVES; i++) {
-            service.submit(new ThiefThread(new Thief(home), start, finish));
+            service.submit(new ThiefThread(new Thief(), home, start, finish, semaphore, HOSTS));
         }
         for (int i = 0; i < HOSTS; i++) {
-            service.submit(new HostThread(new Host(home, ITEMS_PER_HOST), start, finish));
+            service.submit(new HostThread(new Host(home, ITEMS_PER_HOST), start, finish, semaphore));
         }
         service.shutdown();
     }
