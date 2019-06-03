@@ -10,19 +10,26 @@ import com.yukharin.utils.Utils;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    private static final int HOSTS = 10;
-    private static final int THIEVES = 10;
+    private static final long TIMEOUT = 3L;
+    private static final int HOSTS = 100;
+    private static final int THIEVES = 100;
     private static final int ITEMS_PER_HOST = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
 
     private static final Runnable startTask = new Runnable() {
         @Override
         public void run() {
-            System.out.println("Start !!!");
-            Utils.printInfo();
+            try {
+                System.out.println("Start !!!");
+                Utils.printInfo();
+                TimeUnit.SECONDS.sleep(TIMEOUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     };
     private static final CyclicBarrier start = new CyclicBarrier(TOTAL_THREADS, startTask);
@@ -37,7 +44,7 @@ public class Main {
 
     public static void main(String[] args) {
         Home home = new Home();
-        ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
+        ExecutorService service = Executors.newCachedThreadPool();
         for (int i = 0; i < THIEVES; i++) {
             service.submit(new ThiefThread(new Thief(home), start, finish));
         }

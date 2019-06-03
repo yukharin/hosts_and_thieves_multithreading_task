@@ -6,14 +6,20 @@ import com.yukharin.utils.Utils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Host {
 
-    private static int sumValue;
+    private static AtomicInteger sumValue;
+    private static AtomicInteger sumWeight;
     private Home home;
-    private static int sumWeight;
     private List<Item> items;
 
+
+    static {
+        sumWeight = new AtomicInteger();
+        sumValue = new AtomicInteger();
+    }
 
     public Host(Home home, int count) {
         this.home = home;
@@ -24,25 +30,25 @@ public class Host {
 
     private static void generateAggregationValues(List<Item> items) {
         for (Item item : items) {
-            sumValue += item.getValue();
-            sumWeight += item.getWeight();
+            sumValue.addAndGet(item.getValue());
+            sumWeight.addAndGet(item.getWeight());
         }
     }
 
     public static int getSumValue() {
-        return sumValue;
+        return sumValue.intValue();
     }
 
     public static int getSumWeight() {
-        return sumWeight;
+        return sumWeight.intValue();
     }
 
     public void putItems() {
         Iterator<Item> iterator = items.iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
-            sumWeight -= item.getWeight();
-            sumValue -= item.getValue();
+            sumWeight.addAndGet(Math.negateExact(item.getWeight()));
+            sumValue.addAndGet(Math.negateExact(item.getValue()));
             home.addItem(item);
             iterator.remove();
         }
