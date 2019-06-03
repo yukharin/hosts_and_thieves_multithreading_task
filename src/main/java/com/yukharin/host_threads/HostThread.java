@@ -5,14 +5,12 @@ import com.yukharin.hosts.Host;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 public class HostThread implements Runnable {
 
     private Host host;
     private CyclicBarrier barrier;
     private Semaphore semaphore;
-    private static final long TIMEOUT = 5L;
 
     public HostThread(Host host, CyclicBarrier barrier, Semaphore semaphore) {
         this.host = host;
@@ -25,7 +23,7 @@ public class HostThread implements Runnable {
         if (barrier != null) {
             try {
                 barrier.await();
-                if (semaphore.tryAcquire(TIMEOUT, TimeUnit.SECONDS))
+                if (semaphore.tryAcquire())
                     try {
                         host.putItems();
                     } finally {

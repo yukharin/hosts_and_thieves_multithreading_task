@@ -6,7 +6,6 @@ import com.yukharin.thieves.Thief;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 public class ThiefThread implements Runnable {
 
@@ -15,7 +14,6 @@ public class ThiefThread implements Runnable {
     private final int permits;
     private Home home;
     private Semaphore semaphore;
-    private static final long TIMEOUT = 5L;
 
     public ThiefThread(Thief thief, Home home, CyclicBarrier barrier, Semaphore semaphore, int permits) {
         this.thief = thief;
@@ -30,7 +28,7 @@ public class ThiefThread implements Runnable {
         if (barrier != null) {
             try {
                 barrier.await();
-                if (semaphore.tryAcquire(permits, TIMEOUT, TimeUnit.SECONDS)) {
+                if (semaphore.tryAcquire(permits)) {
                     try {
                         thief.steal(home);
                     } finally {

@@ -6,7 +6,6 @@ import com.yukharin.homes.Home;
 import com.yukharin.items.Item;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,13 +18,12 @@ public class Thief {
     }
 
     public void steal(Home home) {
-        Comparator<Item> itemComparator = new ItemComparator();
         List<Item> itemsToSteal = new ArrayList<>();
         Iterator<Item> iterator = home.iterator();
         while (iterator.hasNext()) {
             itemsToSteal.add(iterator.next());
         }
-        itemsToSteal.sort(itemComparator.reversed());
+        itemsToSteal.sort(new ItemComparator().reversed());
         putIntoBag(home, itemsToSteal);
     }
 
