@@ -12,8 +12,8 @@ import java.util.concurrent.*;
 public class Main {
 
     private static final long TIMEOUT = 2L;
-    private static final int HOSTS = 100;
-    private static final int THIEVES = 100;
+    private static final int HOSTS = 1000;
+    private static final int THIEVES = 1000;
     private static final int ITEMS_PER_HOST = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
