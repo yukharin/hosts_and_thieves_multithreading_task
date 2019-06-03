@@ -12,22 +12,19 @@ import java.util.concurrent.*;
 public class Main {
 
     private static final long TIMEOUT = 2L;
-    private static final int HOSTS = 30;
+    private static final int HOSTS = 100;
     private static final int THIEVES = 100;
     private static final int ITEMS_PER_HOST = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
 
-    private static final Runnable task = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                System.out.println("Statistics: ");
-                Utils.printInfo();
-                TimeUnit.SECONDS.sleep(TIMEOUT);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    private static final Runnable task = () -> {
+        try {
+            System.out.println("Statistics: ");
+            Utils.printInfo();
+            TimeUnit.SECONDS.sleep(TIMEOUT);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     };
     private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS, task);
