@@ -35,4 +35,6 @@ public class Utils {
         System.out.println("Sum value thieves: " + Bag.getSumValue());
         System.out.println("Sum weight thieves: " + Bag.getSumWeight());
     }
+
+
 }
