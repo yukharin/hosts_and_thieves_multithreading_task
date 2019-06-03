@@ -10,16 +10,14 @@ import java.util.concurrent.Semaphore;
 public class ThiefThread implements Runnable {
 
     private Thief thief;
-    private CyclicBarrier start;
-    private CyclicBarrier finish;
+    private CyclicBarrier barrier;
     private final int permits;
     private Home home;
     private Semaphore semaphore;
 
-    public ThiefThread(Thief thief, Home home, CyclicBarrier start, CyclicBarrier finish, Semaphore semaphore, int permits) {
+    public ThiefThread(Thief thief, Home home, CyclicBarrier barrier, Semaphore semaphore, int permits) {
         this.thief = thief;
-        this.start = start;
-        this.finish = finish;
+        this.barrier = barrier;
         this.home = home;
         this.semaphore = semaphore;
         this.permits = permits;
@@ -27,16 +25,16 @@ public class ThiefThread implements Runnable {
 
     @Override
     public void run() {
-        if (start != null) {
+        if (barrier != null) {
             try {
-                start.await();
+                barrier.await();
                 try {
                     semaphore.acquire(permits);
                     thief.steal(home);
                 } finally {
                     semaphore.release(permits);
                 }
-                finish.await();
+                barrier.await();
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
