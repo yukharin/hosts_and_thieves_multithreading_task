@@ -25,9 +25,12 @@ public class HostThread implements Runnable {
         if (start != null) {
             try {
                 start.await();
-                semaphore.acquire();
-                host.putItems();
-                semaphore.release();
+                try {
+                    semaphore.acquire();
+                    host.putItems();
+                } finally {
+                    semaphore.release();
+                }
                 finish.await();
             } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
