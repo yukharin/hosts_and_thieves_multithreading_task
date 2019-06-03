@@ -34,7 +34,6 @@ public class Home implements Iterable<Item> {
         sumValue.addAndGet(item.getValue());
         sumWeight.addAndGet(item.getWeight());
         System.out.println(threads.size() + " - threads adding items");
-        System.out.println(Thread.currentThread().getName() + " - adding items " + this);
         threads.remove(Thread.currentThread());
     }
 
@@ -44,7 +43,6 @@ public class Home implements Iterable<Item> {
         sumWeight.addAndGet(Math.negateExact(item.getWeight()));
         items.remove(item);
         System.out.println(threads.size() + " - threads are removing items");
-        System.out.println(Thread.currentThread().getName() + " - removing items " + this);
         threads.remove(Thread.currentThread());
     }
 

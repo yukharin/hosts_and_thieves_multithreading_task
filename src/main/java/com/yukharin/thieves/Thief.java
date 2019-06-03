@@ -14,7 +14,6 @@ public class Thief {
 
     private Bag bag;
 
-
     public Thief() {
         this.bag = new Bag();
     }
