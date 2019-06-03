@@ -11,6 +11,7 @@ import java.util.concurrent.*;
 
 public class Main {
 
+    
     private static final long TIMEOUT = 2L;
     private static final int HOSTS = 100;
     private static final int THIEVES = 150;
