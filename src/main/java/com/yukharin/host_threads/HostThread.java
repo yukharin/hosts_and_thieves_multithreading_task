@@ -2,15 +2,16 @@ package com.yukharin.host_threads;
 
 import com.yukharin.hosts.Host;
 
-import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
-public class HostThread implements Runnable {
+public class HostThread implements Callable<Void> {
 
     private Host host;
     private CyclicBarrier barrier;
     private Semaphore semaphore;
+    private Object Void;
 
 
     public HostThread(Host host, CyclicBarrier barrier, Semaphore semaphore) {
@@ -20,19 +21,18 @@ public class HostThread implements Runnable {
     }
 
     @Override
-    public void run() {
-        try {
-            barrier.await();
-            if (semaphore.tryAcquire()) {
-                try {
-                    host.putItems();
-                } finally {
-                    semaphore.release();
-                }
+    public Void call() {
+        if (semaphore.tryAcquire()) {
+            try {
+                host.putItems();
+            } finally {
+                semaphore.release();
             }
-            barrier.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
         }
+//            semaphore.acquire();
+//            host.putItems();
+//            semaphore.release();
+        return null;
     }
 }
+

@@ -3,11 +3,11 @@ package com.yukharin.thief_threads;
 import com.yukharin.homes.Home;
 import com.yukharin.thieves.Thief;
 
-import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
-public class ThiefThread implements Runnable {
+public class ThiefThread implements Callable<Void> {
 
     private Thief thief;
     private CyclicBarrier barrier;
@@ -24,9 +24,7 @@ public class ThiefThread implements Runnable {
     }
 
     @Override
-    public void run() {
-        try {
-            barrier.await();
+    public Void call() {
             if (semaphore.tryAcquire(permits)) {
                 try {
                     thief.steal(home);
@@ -34,9 +32,10 @@ public class ThiefThread implements Runnable {
                     semaphore.release(permits);
                 }
             }
-            barrier.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
+//            semaphore.acquire(permits);
+//            thief.steal(home);
+//            semaphore.release(permits);
+        return null;
     }
 }
+
