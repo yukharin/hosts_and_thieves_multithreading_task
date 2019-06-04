@@ -12,6 +12,7 @@ public class HostThread implements Runnable {
     private CyclicBarrier barrier;
     private Semaphore semaphore;
 
+
     public HostThread(Host host, CyclicBarrier barrier, Semaphore semaphore) {
         this.host = host;
         this.barrier = barrier;
@@ -20,19 +21,18 @@ public class HostThread implements Runnable {
 
     @Override
     public void run() {
-        if (barrier != null) {
-            try {
-                barrier.await();
-                if (semaphore.tryAcquire())
-                    try {
-                        host.putItems();
-                    } finally {
-                        semaphore.release();
-                    }
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
+        try {
+            barrier.await();
+            if (semaphore.tryAcquire()) {
+                try {
+                    host.putItems();
+                } finally {
+                    semaphore.release();
+                }
             }
+            barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            e.printStackTrace();
         }
     }
 }

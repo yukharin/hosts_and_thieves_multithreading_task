@@ -25,20 +25,18 @@ public class ThiefThread implements Runnable {
 
     @Override
     public void run() {
-        if (barrier != null) {
-            try {
-                barrier.await();
-                if (semaphore.tryAcquire(permits)) {
-                    try {
-                        thief.steal(home);
-                    } finally {
-                        semaphore.release(permits);
-                    }
+        try {
+            barrier.await();
+            if (semaphore.tryAcquire(permits)) {
+                try {
+                    thief.steal(home);
+                } finally {
+                    semaphore.release(permits);
                 }
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException e) {
-                e.printStackTrace();
             }
+            barrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            e.printStackTrace();
         }
     }
 }
