@@ -1,4 +1,4 @@
-package com.yukharin.items;
+package com.yukharin.entities;
 
 public class Item {
 
