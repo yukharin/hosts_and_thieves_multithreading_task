@@ -1,37 +1,42 @@
-package com.yukharin.thief_threads;
+package com.yukharin.threads;
 
-import com.yukharin.homes.Home;
-import com.yukharin.thieves.Thief;
+import com.yukharin.entities.Home;
+import com.yukharin.entities.Thief;
 
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class ThiefThread implements Callable<Void> {
+public class ThiefThread implements Runnable {
 
     private Thief thief;
     private final int permits;
     private Home home;
     private Semaphore semaphore;
     private CyclicBarrier barrier;
+    private AtomicInteger counter;
 
 
-    public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier) {
+    public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier, AtomicInteger counter) {
         this.thief = thief;
         this.home = home;
         this.semaphore = semaphore;
         this.permits = permits;
         this.barrier = barrier;
+        this.counter = counter;
     }
 
     @Override
-    public Void call() {
+    public void run() {
         try {
             barrier.await();
             semaphore.acquire(permits);
             try {
+                counter.incrementAndGet();
                 thief.steal(home);
+                System.out.println("Thieves inside home: " + counter.intValue());
+                counter.decrementAndGet();
             } finally {
                 semaphore.release(permits);
             }
@@ -39,7 +44,6 @@ public class ThiefThread implements Callable<Void> {
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
 

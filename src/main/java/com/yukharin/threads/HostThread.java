@@ -1,32 +1,37 @@
-package com.yukharin.host_threads;
+package com.yukharin.threads;
 
-import com.yukharin.hosts.Host;
+import com.yukharin.entities.Host;
 
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class HostThread implements Callable<Void> {
+public class HostThread implements Runnable {
 
     private Host host;
     private Semaphore semaphore;
     private CyclicBarrier barrier;
+    private AtomicInteger counter;
 
 
-    public HostThread(Host host, Semaphore semaphore, CyclicBarrier barrier) {
+    public HostThread(Host host, Semaphore semaphore, CyclicBarrier barrier, AtomicInteger counter) {
         this.host = host;
         this.semaphore = semaphore;
         this.barrier = barrier;
+        this.counter = counter;
     }
 
     @Override
-    public Void call() {
+    public void run() {
         try {
             barrier.await();
             semaphore.acquire();
             try {
+                counter.incrementAndGet();
                 host.putItems();
+                System.out.println("Hosts inside home: " + counter.intValue());
+                counter.decrementAndGet();
             } finally {
                 semaphore.release();
             }
@@ -34,7 +39,6 @@ public class HostThread implements Callable<Void> {
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
 

@@ -1,7 +1,5 @@
-package com.yukharin.hosts;
+package com.yukharin.entities;
 
-import com.yukharin.homes.Home;
-import com.yukharin.items.Item;
 import com.yukharin.utils.Utils;
 
 import java.util.Iterator;
@@ -51,14 +49,6 @@ public class Host {
             home.addItem(item);
             iterator.remove();
         }
-    }
-
-    public Home getHome() {
-        return this.home;
-    }
-
-    public int itemsCount() {
-        return items.size();
     }
 
     @Override

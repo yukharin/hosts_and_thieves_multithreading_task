@@ -1,9 +1,9 @@
 package com.yukharin.utils;
 
-import com.yukharin.bags.Bag;
-import com.yukharin.homes.Home;
-import com.yukharin.hosts.Host;
-import com.yukharin.items.Item;
+import com.yukharin.entities.Bag;
+import com.yukharin.entities.Home;
+import com.yukharin.entities.Host;
+import com.yukharin.entities.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.Random;
 
 public class Utils {
 
-    private static final int LOWER_WEIGHT = 2;
-    private static final int UPPER_WEIGHT = 16;
-    private static final int LOWER_VALUE = 10;
-    private static final int UPPER_VALUE = 100;
+    private static final int LOWER_WEIGHT = 15;
+    private static final int UPPER_WEIGHT = 50;
+    private static final int LOWER_VALUE = 15;
+    private static final int UPPER_VALUE = 150;
 
     public static List<Item> generateItems(int count) {
-        List<Item> items = new ArrayList<>();
+        List<Item> items = new ArrayList<>(count);
         Random random = new Random();
         for (int i = 0; i < count; i++) {
             int weight = LOWER_WEIGHT + random.nextInt(UPPER_WEIGHT);
@@ -27,14 +27,14 @@ public class Utils {
         return items;
     }
 
-    public static void printInfo() {
+    public static void printInfo(Home home) {
+        home.updateAggregationValues();
         System.out.println("Sum value hosts: " + Host.getSumValue());
         System.out.println("Sum weight hosts: " + Host.getSumWeight());
-        System.out.println("Sum value home: " + Home.getSumValue());
-        System.out.println("Sum weight home: " + Home.getSumWeight());
+        System.out.println("Sum value home: " + home.getSumValue());
+        System.out.println("Sum weight home: " + home.getSumWeight());
         System.out.println("Sum value thieves: " + Bag.getSumValue());
         System.out.println("Sum weight thieves: " + Bag.getSumWeight());
     }
-
-
 }
+

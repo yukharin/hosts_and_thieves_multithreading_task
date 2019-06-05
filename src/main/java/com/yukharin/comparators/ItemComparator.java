@@ -1,6 +1,6 @@
 package com.yukharin.comparators;
 
-import com.yukharin.items.Item;
+import com.yukharin.entities.Item;
 
 import java.util.Comparator;
 

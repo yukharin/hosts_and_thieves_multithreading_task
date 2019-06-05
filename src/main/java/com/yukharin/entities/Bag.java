@@ -1,6 +1,4 @@
-package com.yukharin.bags;
-
-import com.yukharin.items.Item;
+package com.yukharin.entities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,6 +36,20 @@ public class Bag implements Iterable<Item> {
             sumWeight.addAndGet(item.getWeight());
             return true;
         }
+    }
+
+    public List<Item> addAll(List<Item> itemsToSteal) {
+        for (Item item : itemsToSteal) {
+            if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
+                break;
+            } else {
+                items.add(item);
+                currentWeight += item.getWeight();
+                sumValue.addAndGet(item.getValue());
+                sumWeight.addAndGet(item.getWeight());
+            }
+        }
+        return items;
     }
 
 
