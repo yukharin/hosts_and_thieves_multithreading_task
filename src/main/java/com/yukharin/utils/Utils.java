@@ -11,6 +11,9 @@ import java.util.Random;
 
 public class Utils {
 
+    private Utils() {
+    }
+
     private static final int LOWER_WEIGHT = 15;
     private static final int UPPER_WEIGHT = 50;
     private static final int LOWER_VALUE = 15;
