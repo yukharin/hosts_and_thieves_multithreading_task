@@ -1,4 +1,4 @@
-package com.yukharin.entities;
+package com.yukharin.hosts_and_thieves.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,6 @@ public class Home implements Iterable<Item> {
         items = Collections.synchronizedList(new ArrayList<>());
     }
 
-
     public void addItem(Item item) {
         items.add(item);
     }
@@ -26,6 +25,10 @@ public class Home implements Iterable<Item> {
 
     public int countItems() {
         return items.size();
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 
     public void updateAggregationValues() {

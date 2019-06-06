@@ -1,9 +1,9 @@
-package com.yukharin.utils;
+package com.yukharin.hosts_and_thieves.utils;
 
-import com.yukharin.entities.Bag;
-import com.yukharin.entities.Home;
-import com.yukharin.entities.Host;
-import com.yukharin.entities.Item;
+import com.yukharin.hosts_and_thieves.entities.Bag;
+import com.yukharin.hosts_and_thieves.entities.Home;
+import com.yukharin.hosts_and_thieves.entities.Host;
+import com.yukharin.hosts_and_thieves.entities.Item;
 
 import java.util.ArrayList;
 import java.util.List;

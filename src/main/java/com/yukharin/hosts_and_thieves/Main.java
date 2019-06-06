@@ -1,11 +1,11 @@
-package com.yukharin;
+package com.yukharin.hosts_and_thieves;
 
-import com.yukharin.entities.Home;
-import com.yukharin.entities.Host;
-import com.yukharin.entities.Thief;
-import com.yukharin.threads.HostThread;
-import com.yukharin.threads.ThiefThread;
-import com.yukharin.utils.Utils;
+import com.yukharin.hosts_and_thieves.entities.Home;
+import com.yukharin.hosts_and_thieves.entities.Host;
+import com.yukharin.hosts_and_thieves.entities.Thief;
+import com.yukharin.hosts_and_thieves.threads.HostThread;
+import com.yukharin.hosts_and_thieves.threads.ThiefThread;
+import com.yukharin.hosts_and_thieves.utils.Utils;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         for (int i = 0; i < HOSTS; i++) {
-            service.submit(new HostThread(new Host(home, ITEMS_PER_HOST), semaphore, barrier, threadsCounter));
+            service.submit(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, barrier, threadsCounter));
         }
         for (int i = 0; i < THIEVES; i++) {
             service.submit(new ThiefThread(new Thief(), home, semaphore, HOSTS, barrier, threadsCounter));
@@ -61,5 +61,6 @@ public class Main {
     /* Performance Synchronized ArrayList in Home class: 15.7, 16, 16, 16.2 , 15.9 , 15.8, 15.9  seconds */
     /* Performance Synchronized LinkedList in Home class: 9 , 16.2, 17.1, 8 , 17.3 , 16.8 , 12.2  seconds */
     /* !!!! */
+
 
 }

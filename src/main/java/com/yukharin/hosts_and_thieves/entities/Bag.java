@@ -1,4 +1,4 @@
-package com.yukharin.entities;
+package com.yukharin.hosts_and_thieves.entities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,30 +26,34 @@ public class Bag implements Iterable<Item> {
         return sumWeight.intValue();
     }
 
-    public boolean add(Item item) {
-        if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
-            return false;
-        } else {
+    public Item add(Item item) {
+        if (isEnough(item)) {
             items.add(item);
             currentWeight += item.getWeight();
             sumValue.addAndGet(item.getValue());
             sumWeight.addAndGet(item.getWeight());
-            return true;
-        }
+            return item;
+        } else return null;
     }
 
     public List<Item> addAll(List<Item> itemsToSteal) {
+        List<Item> temp = new ArrayList<>(itemsToSteal.size());
         for (Item item : itemsToSteal) {
-            if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
-                break;
-            } else {
-                items.add(item);
+            if (isEnough(item)) {
+                temp.add(item);
                 currentWeight += item.getWeight();
                 sumValue.addAndGet(item.getValue());
                 sumWeight.addAndGet(item.getWeight());
+            } else {
+                break;
             }
         }
-        return items;
+        items.addAll(temp);
+        return temp;
+    }
+
+    public boolean isEnough(Item item) {
+        return !(item.getWeight() + currentWeight >= WEIGHT_LIMIT);
     }
 
 

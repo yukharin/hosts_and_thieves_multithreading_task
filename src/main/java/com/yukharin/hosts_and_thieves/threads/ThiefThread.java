@@ -1,7 +1,7 @@
-package com.yukharin.threads;
+package com.yukharin.hosts_and_thieves.threads;
 
-import com.yukharin.entities.Home;
-import com.yukharin.entities.Thief;
+import com.yukharin.hosts_and_thieves.entities.Home;
+import com.yukharin.hosts_and_thieves.entities.Thief;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -31,14 +31,16 @@ public class ThiefThread implements Runnable {
     public void run() {
         try {
             barrier.await();
-            semaphore.acquire(permits);
-            try {
-                counter.incrementAndGet();
-                thief.steal(home);
-                System.out.println("Thieves inside home: " + counter.intValue());
-                counter.decrementAndGet();
-            } finally {
-                semaphore.release(permits);
+            while (!home.isEmpty() && !thief.isBagFull()) {
+                semaphore.acquire(permits);
+                try {
+                    counter.incrementAndGet();
+                    thief.steal(home);
+                    System.out.println("Thieves inside home: " + counter.intValue());
+                    counter.decrementAndGet();
+                } finally {
+                    semaphore.release(permits);
+                }
             }
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {

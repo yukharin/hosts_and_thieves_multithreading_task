@@ -1,6 +1,6 @@
-package com.yukharin.entities;
+package com.yukharin.hosts_and_thieves.entities;
 
-import com.yukharin.utils.Utils;
+import com.yukharin.hosts_and_thieves.utils.Utils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +10,6 @@ public class Host {
 
     private static AtomicInteger sumValue;
     private static AtomicInteger sumWeight;
-    private Home home;
     private List<Item> items;
 
 
@@ -19,8 +18,7 @@ public class Host {
         sumValue = new AtomicInteger();
     }
 
-    public Host(Home home, int count) {
-        this.home = home;
+    public Host(int count) {
         this.items = Utils.generateItems(count);
         generateAggregationValues(items);
     }
@@ -40,7 +38,7 @@ public class Host {
         return sumWeight.intValue();
     }
 
-    public void putItems() {
+    public void putItems(Home home) {
         Iterator<Item> iterator = items.iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
@@ -50,6 +48,22 @@ public class Host {
             iterator.remove();
         }
     }
+
+    public void putItem(Home home) {
+        Iterator<Item> iterator = items.iterator();
+        if (iterator.hasNext()) {
+            Item item = iterator.next();
+            sumWeight.addAndGet(Math.negateExact(item.getWeight()));
+            sumValue.addAndGet(Math.negateExact(item.getValue()));
+            home.addItem(item);
+            iterator.remove();
+        }
+    }
+
+    public boolean haveItems() {
+        return !items.isEmpty();
+    }
+
 
     @Override
     public String toString() {

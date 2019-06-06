@@ -1,6 +1,6 @@
-package com.yukharin.comparators;
+package com.yukharin.hosts_and_thieves.comparators;
 
-import com.yukharin.entities.Item;
+import com.yukharin.hosts_and_thieves.entities.Item;
 
 import java.util.Comparator;
 
