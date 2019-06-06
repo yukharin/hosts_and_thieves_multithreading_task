@@ -1,9 +1,6 @@
 package com.yukharin.hosts_and_thieves.entities;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Home implements Iterable<Item> {
 
@@ -16,7 +13,7 @@ public class Home implements Iterable<Item> {
     }
 
     public void addItem(Item item) {
-        items.add(item);
+        items.add(Objects.requireNonNull(item));
     }
 
     public void removeItem(Item item) {
