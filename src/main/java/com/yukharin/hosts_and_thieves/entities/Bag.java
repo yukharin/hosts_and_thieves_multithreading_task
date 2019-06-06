@@ -3,6 +3,7 @@ package com.yukharin.hosts_and_thieves.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bag implements Iterable<Item> {
@@ -27,6 +28,7 @@ public class Bag implements Iterable<Item> {
     }
 
     public Item add(Item item) {
+        Objects.requireNonNull(item);
         if (isEnough(item)) {
             items.add(item);
             currentWeight += item.getWeight();
@@ -37,6 +39,7 @@ public class Bag implements Iterable<Item> {
     }
 
     public List<Item> addAll(List<Item> itemsToSteal) {
+        itemsToSteal = Objects.requireNonNull(itemsToSteal);
         List<Item> temp = new ArrayList<>(itemsToSteal.size());
         for (Item item : itemsToSteal) {
             if (isEnough(item)) {

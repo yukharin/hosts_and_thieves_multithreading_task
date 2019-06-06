@@ -4,6 +4,7 @@ import com.yukharin.hosts_and_thieves.utils.Utils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Host {
@@ -19,7 +20,7 @@ public class Host {
     }
 
     public Host(int count) {
-        this.items = Utils.generateItems(count);
+        this.items = Objects.requireNonNull(Utils.generateItems(count));
         generateAggregationValues(items);
     }
 

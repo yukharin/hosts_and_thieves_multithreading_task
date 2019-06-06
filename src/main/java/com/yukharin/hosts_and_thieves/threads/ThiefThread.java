@@ -3,6 +3,7 @@ package com.yukharin.hosts_and_thieves.threads;
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Thief;
 
+import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
@@ -19,12 +20,12 @@ public class ThiefThread implements Runnable {
 
 
     public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier, AtomicInteger counter) {
-        this.thief = thief;
-        this.home = home;
-        this.semaphore = semaphore;
+        this.thief = Objects.requireNonNull(thief);
+        this.home = Objects.requireNonNull(home);
+        this.semaphore = Objects.requireNonNull(semaphore);
+        this.barrier = Objects.requireNonNull(barrier);
+        this.counter = Objects.requireNonNull(counter);
         this.permits = permits;
-        this.barrier = barrier;
-        this.counter = counter;
     }
 
     @Override
