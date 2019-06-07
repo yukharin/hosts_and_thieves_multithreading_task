@@ -28,6 +28,7 @@ public class Thief {
         boolean result = bag.checkCapacity(item);
         if (result) {
             bag.add(item);
+            System.out.println(Thread.currentThread().getName() + " stealing " + bag);
             home.removeItem(item);
         } else {
             this.markBagFull();

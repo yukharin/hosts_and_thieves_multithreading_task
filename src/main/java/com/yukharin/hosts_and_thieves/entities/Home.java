@@ -14,10 +14,12 @@ public class Home implements Iterable<Item> {
 
     public void addItem(Item item) {
         items.add(Objects.requireNonNull(item));
+        System.out.println(Thread.currentThread().getName() + " adding item ");
     }
 
     public void removeItem(Item item) {
         items.remove(item);
+        System.out.println(Thread.currentThread().getName() + " removing item ");
     }
 
     public int countItems() {

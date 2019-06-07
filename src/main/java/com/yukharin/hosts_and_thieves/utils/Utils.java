@@ -14,8 +14,8 @@ public class Utils {
     private Utils() {
     }
 
-    private static final int LOWER_WEIGHT = 15;
-    private static final int UPPER_WEIGHT = 50;
+    private static final int LOWER_WEIGHT = 5;
+    private static final int UPPER_WEIGHT = 30;
     private static final int LOWER_VALUE = 15;
     private static final int UPPER_VALUE = 150;
 
