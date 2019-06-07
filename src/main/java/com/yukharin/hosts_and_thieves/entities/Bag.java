@@ -29,7 +29,7 @@ public class Bag implements Iterable<Item> {
 
     public void add(Item item) {
         Objects.requireNonNull(item);
-        if (notEnoughSpace(item, currentWeight)) {
+        if (!isEnough(item)) {
             throw new IllegalArgumentException("Item is too heavy for this bag");
         }
         items.add(item);
@@ -41,7 +41,7 @@ public class Bag implements Iterable<Item> {
     public void addAll(List<Item> itemsToSteal) {
         Objects.requireNonNull(itemsToSteal);
         for (Item item : itemsToSteal) {
-            if (notEnoughSpace(item, currentWeight)) {
+            if (!isEnough(item)) {
                 throw new IllegalArgumentException("Item is too heavy for this bag");
             }
             items.add(item);
@@ -51,29 +51,9 @@ public class Bag implements Iterable<Item> {
         }
     }
 
-
-    public List<Item> checkCapacity(List<Item> allItems) {
-        Objects.requireNonNull(allItems);
-        List<Item> itemsToSteal = new ArrayList<>();
-        int tempWeight = currentWeight;
-        for (Item item : allItems) {
-            if (!notEnoughSpace(item, tempWeight)) {
-                itemsToSteal.add(item);
-                tempWeight += item.getWeight();
-            }
-        }
-        return itemsToSteal;
-    }
-
-    public Item checkCapacity(Item item) {
+    public boolean isEnough(Item item) {
         Objects.requireNonNull(item);
-        if (notEnoughSpace(item, currentWeight)) {
-            return Item.ITEM_NULL;
-        } else return item;
-    }
-
-    private boolean notEnoughSpace(Item item, int currentWeight) {
-        return (item.getWeight() + currentWeight >= WEIGHT_LIMIT);
+        return !(item.getWeight() + currentWeight >= WEIGHT_LIMIT);
     }
 
     @Override

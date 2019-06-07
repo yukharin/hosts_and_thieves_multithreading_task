@@ -17,21 +17,33 @@ public class Thief {
     public void stealAll(Home home) {
         Objects.requireNonNull(home);
         List<Item> allItems = getSortedItems(home);
-        List<Item> itemsToSteal = bag.checkCapacity(allItems);
-        bag.addAll(itemsToSteal);
-        removeItems(itemsToSteal, home);
+        putAndRemoveItems(home, allItems);
     }
 
     public void steal(Home home) {
         Objects.requireNonNull(home);
         Item item = getMostValuable(home);
-        Item itemToSteal = bag.checkCapacity(item);
-        if (itemToSteal == Item.ITEM_NULL) {
-            this.markBagFull();
+        putAndRemoveItem(home, item);
+    }
+
+    private void putAndRemoveItem(Home home, Item item) {
+        if (bag.isEnough(item)) {
+            bag.add(item);
+            home.removeItem(item);
         } else {
-            bag.add(itemToSteal);
-            System.out.println(Thread.currentThread().getName() + " stealing " + bag);
-            removeItem(itemToSteal, home);
+            markBagFull();
+        }
+    }
+
+    private void putAndRemoveItems(Home home, List<Item> allItems) {
+        for (Item item : allItems) {
+            if (bag.isEnough(item)) {
+                bag.add(item);
+                home.removeItem(item);
+            } else {
+                markBagFull();
+                break;
+            }
         }
     }
 
@@ -57,15 +69,6 @@ public class Thief {
         return sortedItems;
     }
 
-    private void removeItems(List<Item> itemsToRemove, Home home) {
-        for (Item item : itemsToRemove) {
-            home.removeItem(item);
-        }
-    }
-
-    private void removeItem(Item item, Home home) {
-        home.removeItem(item);
-    }
 
     private void markBagFull() {
         isFull = true;

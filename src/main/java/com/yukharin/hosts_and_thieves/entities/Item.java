@@ -4,7 +4,6 @@ public class Item implements Comparable<Item> {
 
     private int weight;
     private int value;
-    public static final Item ITEM_NULL = null;
 
     public Item(int weight, int value) {
         this.weight = weight;
