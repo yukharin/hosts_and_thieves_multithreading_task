@@ -63,6 +63,10 @@ public class Thief {
         }
     }
 
+    private void removeItem(Item item, Home home) {
+        home.removeItem(item);
+    }
+
     private void markBagFull() {
         isFull = true;
     }
