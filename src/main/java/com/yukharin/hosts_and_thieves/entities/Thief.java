@@ -27,7 +27,7 @@ public class Thief {
     }
 
     private void putAndRemoveItem(Home home, Item item) {
-        if (bag.isEnough(item)) {
+        if (bag.isEnoughSpace(item)) {
             bag.add(item);
             home.removeItem(item);
         } else {
@@ -37,7 +37,7 @@ public class Thief {
 
     private void putAndRemoveItems(Home home, List<Item> allItems) {
         for (Item item : allItems) {
-            if (bag.isEnough(item)) {
+            if (bag.isEnoughSpace(item)) {
                 bag.add(item);
                 home.removeItem(item);
             } else {

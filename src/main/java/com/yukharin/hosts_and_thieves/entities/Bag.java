@@ -29,7 +29,7 @@ public class Bag implements Iterable<Item> {
 
     public void add(Item item) {
         Objects.requireNonNull(item);
-        if (!isEnough(item)) {
+        if (!isEnoughSpace(item)) {
             throw new IllegalArgumentException("Item is too heavy for this bag");
         }
         items.add(item);
@@ -41,7 +41,7 @@ public class Bag implements Iterable<Item> {
     public void addAll(List<Item> itemsToSteal) {
         Objects.requireNonNull(itemsToSteal);
         for (Item item : itemsToSteal) {
-            if (!isEnough(item)) {
+            if (!isEnoughSpace(item)) {
                 throw new IllegalArgumentException("Item is too heavy for this bag");
             }
             items.add(item);
@@ -51,7 +51,7 @@ public class Bag implements Iterable<Item> {
         }
     }
 
-    public boolean isEnough(Item item) {
+    public boolean isEnoughSpace(Item item) {
         Objects.requireNonNull(item);
         return !(item.getWeight() + currentWeight >= WEIGHT_LIMIT);
     }
