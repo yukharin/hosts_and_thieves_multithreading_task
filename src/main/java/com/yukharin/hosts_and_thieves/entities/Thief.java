@@ -29,9 +29,9 @@ public class Thief {
         if (itemToSteal == null) {
             this.markBagFull();
         } else {
-            bag.add(item);
+            bag.add(itemToSteal);
             System.out.println(Thread.currentThread().getName() + " stealing " + bag);
-            home.removeItem(item);
+            removeItem(itemToSteal, home);
         }
     }
 
