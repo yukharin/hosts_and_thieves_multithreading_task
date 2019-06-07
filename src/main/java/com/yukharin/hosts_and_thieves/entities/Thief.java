@@ -26,7 +26,7 @@ public class Thief {
         Objects.requireNonNull(home);
         Item item = getMostValuable(home);
         Item itemToSteal = bag.checkCapacity(item);
-        if (itemToSteal == Item.EMPTY_ITEM) {
+        if (itemToSteal == null) {
             this.markBagFull();
         } else {
             bag.add(item);
