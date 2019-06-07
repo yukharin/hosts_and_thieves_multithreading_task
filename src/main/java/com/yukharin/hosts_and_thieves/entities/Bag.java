@@ -68,7 +68,7 @@ public class Bag implements Iterable<Item> {
     public Item checkCapacity(Item item) {
         Objects.requireNonNull(item);
         if (notEnoughSpace(item, currentWeight)) {
-            return null;
+            return Item.ITEM_NULL;
         } else return item;
     }
 
