@@ -18,18 +18,21 @@ public class Thief {
     }
 
     public void stealAll(Home home) {
-        List<Item> itemsToSteal = getSortedItems(home);
-        List<Item> itemsToRemove = bag.addAll(itemsToSteal);
-        removeItems(itemsToRemove, home);
+        List<Item> allItems = getSortedItems(home);
+        List<Item> itemsToSteal = bag.checkCapacity(allItems);
+        bag.addAll(itemsToSteal);
+        removeItems(itemsToSteal, home);
     }
 
     public void steal(Home home) {
         Item item = getMostValuable(home);
-        Item itemToRemove = bag.add(item);
-        if (itemToRemove == null) {
+        boolean result = bag.checkCapacity(item);
+        if (result) {
+            bag.add(item);
+            home.removeItem(item);
+        } else {
             this.markBagFull();
         }
-        home.removeItem(itemToRemove);
     }
 
     private Item getMostValuable(Home home) {

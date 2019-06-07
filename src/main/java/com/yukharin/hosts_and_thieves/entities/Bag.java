@@ -27,38 +27,46 @@ public class Bag implements Iterable<Item> {
         return sumWeight.intValue();
     }
 
-    public Item add(Item item) {
+    public void add(Item item) {
         Objects.requireNonNull(item);
-        if (isEnough(item)) {
+        if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
+            throw new IllegalArgumentException("Item is too heavy for this bag");
+        }
+        items.add(item);
+        currentWeight += item.getWeight();
+        sumValue.addAndGet(item.getValue());
+        sumWeight.addAndGet(item.getWeight());
+    }
+
+    public void addAll(List<Item> itemsToSteal) {
+        itemsToSteal = Objects.requireNonNull(itemsToSteal);
+        for (Item item : itemsToSteal) {
+            if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
+                throw new IllegalArgumentException("Item is too heavy for this bag");
+            }
             items.add(item);
             currentWeight += item.getWeight();
             sumValue.addAndGet(item.getValue());
             sumWeight.addAndGet(item.getWeight());
-            return item;
-        } else return null;
+        }
     }
 
-    public List<Item> addAll(List<Item> itemsToSteal) {
-        itemsToSteal = Objects.requireNonNull(itemsToSteal);
-        List<Item> temp = new ArrayList<>(itemsToSteal.size());
-        for (Item item : itemsToSteal) {
-            if (isEnough(item)) {
-                temp.add(item);
-                currentWeight += item.getWeight();
-                sumValue.addAndGet(item.getValue());
-                sumWeight.addAndGet(item.getWeight());
-            } else {
-                break;
+
+    public List<Item> checkCapacity(List<Item> allItems) {
+        List<Item> itemsToSteal = new ArrayList<>();
+        int tempWeight = currentWeight;
+        for (Item item : allItems) {
+            if (item.getWeight() + tempWeight >= WEIGHT_LIMIT) {
+                itemsToSteal.add(item);
+                tempWeight += item.getWeight();
             }
         }
-        items.addAll(temp);
-        return temp;
+        return itemsToSteal;
     }
 
-    public boolean isEnough(Item item) {
-        return !(item.getWeight() + currentWeight >= WEIGHT_LIMIT);
+    public boolean checkCapacity(Item item) {
+        return item.getWeight() + currentWeight >= WEIGHT_LIMIT;
     }
-
 
     @Override
     public Iterator<Item> iterator() {

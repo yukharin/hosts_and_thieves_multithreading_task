@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
-    private static final int HOSTS = 500;
-    private static final int THIEVES = 500;
-    private static final int ITEMS_PER_HOST = 500;
+    private static final int HOSTS = 100;
+    private static final int THIEVES = 100;
+    private static final int ITEMS_PER_HOST = 10;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final Home home = new Home();
