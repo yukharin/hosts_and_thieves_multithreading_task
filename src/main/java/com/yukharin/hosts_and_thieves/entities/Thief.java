@@ -25,13 +25,13 @@ public class Thief {
     public void steal(Home home) {
         Objects.requireNonNull(home);
         Item item = getMostValuable(home);
-        boolean result = bag.checkCapacity(item);
-        if (result) {
+        Item itemToSteal = bag.checkCapacity(item);
+        if (itemToSteal == Item.EMPTY_ITEM) {
+            this.markBagFull();
+        } else {
             bag.add(item);
             System.out.println(Thread.currentThread().getName() + " stealing " + bag);
             home.removeItem(item);
-        } else {
-            this.markBagFull();
         }
     }
 
