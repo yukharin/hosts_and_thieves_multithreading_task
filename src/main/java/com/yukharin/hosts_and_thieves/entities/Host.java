@@ -40,6 +40,7 @@ public class Host {
     }
 
     public void putItems(Home home) {
+        Objects.requireNonNull(home);
         Iterator<Item> iterator = items.iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
@@ -51,6 +52,7 @@ public class Host {
     }
 
     public void putItem(Home home) {
+        Objects.requireNonNull(home);
         Iterator<Item> iterator = items.iterator();
         if (iterator.hasNext()) {
             Item item = iterator.next();

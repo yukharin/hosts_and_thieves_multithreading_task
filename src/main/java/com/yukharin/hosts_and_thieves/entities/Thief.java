@@ -2,10 +2,7 @@ package com.yukharin.hosts_and_thieves.entities;
 
 import com.yukharin.hosts_and_thieves.comparators.ItemComparator;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Thief {
 
@@ -18,6 +15,7 @@ public class Thief {
     }
 
     public void stealAll(Home home) {
+        Objects.requireNonNull(home);
         List<Item> allItems = getSortedItems(home);
         List<Item> itemsToSteal = bag.checkCapacity(allItems);
         bag.addAll(itemsToSteal);
@@ -25,6 +23,7 @@ public class Thief {
     }
 
     public void steal(Home home) {
+        Objects.requireNonNull(home);
         Item item = getMostValuable(home);
         boolean result = bag.checkCapacity(item);
         if (result) {
