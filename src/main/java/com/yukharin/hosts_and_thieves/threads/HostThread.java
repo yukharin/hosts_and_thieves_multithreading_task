@@ -30,20 +30,36 @@ public class HostThread implements Runnable {
     public void run() {
         try {
             barrier.await();
-            while (host.haveItems()) {
-                semaphore.acquire();
-                try {
-                    counter.incrementAndGet();
-                    host.putItem(home);
-                    System.out.println("Hosts inside home: " + counter.intValue());
-                    counter.decrementAndGet();
-                } finally {
-                    semaphore.release();
-                }
-            }
+            putItem();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void putItem() throws InterruptedException {
+        while (host.haveItems()) {
+            semaphore.acquire();
+            try {
+                counter.incrementAndGet();
+                host.putItem(home);
+                System.out.println("Hosts inside home: " + counter.intValue());
+                counter.decrementAndGet();
+            } finally {
+                semaphore.release();
+            }
+        }
+    }
+
+    private void putItems() throws InterruptedException {
+        semaphore.acquire();
+        try {
+            counter.incrementAndGet();
+            host.putItems(home);
+            System.out.println("Hosts inside home: " + counter.intValue());
+            counter.decrementAndGet();
+        } finally {
+            semaphore.release();
         }
     }
 

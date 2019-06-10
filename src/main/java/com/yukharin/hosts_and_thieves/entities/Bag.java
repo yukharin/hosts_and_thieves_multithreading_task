@@ -53,7 +53,7 @@ public class Bag implements Iterable<Item> {
 
     public boolean isEnoughSpace(Item item) {
         Objects.requireNonNull(item);
-        return !(item.getWeight() + currentWeight >= WEIGHT_LIMIT);
+        return (item.getWeight() + currentWeight <= WEIGHT_LIMIT);
     }
 
     @Override

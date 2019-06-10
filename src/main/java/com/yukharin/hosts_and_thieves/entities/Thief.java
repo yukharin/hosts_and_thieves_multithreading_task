@@ -26,25 +26,14 @@ public class Thief {
         putAndRemoveItem(home, item);
     }
 
-    private void putAndRemoveItem(Home home, Item item) {
-        if (bag.isEnoughSpace(item)) {
-            bag.add(item);
-            home.removeItem(item);
-        } else {
-            markBagFull();
+    private List<Item> getSortedItems(Home home) {
+        ArrayList<Item> sortedItems = new ArrayList<>(home.countItems());
+        Iterator<Item> iterator = home.iterator();
+        while (iterator.hasNext()) {
+            sortedItems.add(iterator.next());
         }
-    }
-
-    private void putAndRemoveItems(Home home, List<Item> allItems) {
-        for (Item item : allItems) {
-            if (bag.isEnoughSpace(item)) {
-                bag.add(item);
-                home.removeItem(item);
-            } else {
-                markBagFull();
-                break;
-            }
-        }
+        sortedItems.sort(itemComparator);
+        return sortedItems;
     }
 
     private Item getMostValuable(Home home) {
@@ -59,14 +48,25 @@ public class Thief {
         return maxItem;
     }
 
-    private List<Item> getSortedItems(Home home) {
-        ArrayList<Item> sortedItems = new ArrayList<>(home.countItems());
-        Iterator<Item> iterator = home.iterator();
-        while (iterator.hasNext()) {
-            sortedItems.add(iterator.next());
+    private void putAndRemoveItems(Home home, List<Item> allItems) {
+        for (Item item : allItems) {
+            if (bag.isEnoughSpace(item)) {
+                bag.add(item);
+                home.removeItem(item);
+            } else {
+                markBagFull();
+                break;
+            }
         }
-        sortedItems.sort(itemComparator);
-        return sortedItems;
+    }
+
+    private void putAndRemoveItem(Home home, Item item) {
+        if (bag.isEnoughSpace(item)) {
+            bag.add(item);
+            home.removeItem(item);
+        } else {
+            markBagFull();
+        }
     }
 
 

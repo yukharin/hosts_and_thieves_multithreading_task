@@ -33,7 +33,7 @@ public class ThiefThread implements Runnable {
     public void run() {
         try {
             barrier.await();
-            stealIncrementally();
+            stealAll();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
