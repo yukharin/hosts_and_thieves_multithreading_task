@@ -2,7 +2,8 @@ package com.yukharin.hosts_and_thieves.threads;
 
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Thief;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
@@ -19,7 +20,7 @@ public class ThiefThread implements Runnable {
     private Semaphore semaphore;
     private CyclicBarrier barrier;
     private AtomicInteger counter;
-    private static Logger logger = Logger.getLogger(ThiefThread.class);
+    private static Logger logger = LogManager.getLogger(ThiefThread.class);
 
 
     public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier, AtomicInteger counter) {

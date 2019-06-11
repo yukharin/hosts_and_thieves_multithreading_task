@@ -1,6 +1,7 @@
 package com.yukharin.hosts_and_thieves.entities;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ public class Home implements Iterable<Item> {
     private final List<Item> items;
     private int sumValue;
     private int sumWeight;
-    private static Logger logger = Logger.getLogger(Home.class);
+    private static Logger logger = LogManager.getLogger(Home.class);
 
     public Home() {
         items = Collections.synchronizedList(new ArrayList<>());

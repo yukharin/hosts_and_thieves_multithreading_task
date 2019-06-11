@@ -4,8 +4,8 @@ import com.yukharin.hosts_and_thieves.entities.Bag;
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Host;
 import com.yukharin.hosts_and_thieves.entities.Item;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Utils {
 
-    private static Logger logger = Logger.getLogger(Utils.class);
+    private static final Logger logger = LogManager.getLogger(Utils.class);
     private static final int LOWER_WEIGHT = 5;
     private static final int UPPER_WEIGHT = 30;
     private static final int LOWER_VALUE = 15;
@@ -34,7 +34,6 @@ public class Utils {
     }
 
     public static void printInfo(Home home) {
-        BasicConfigurator.configure();
         home.updateAggregationValues();
         logger.info("Sum value hosts: " + Host.getSumValue());
         logger.info("Sum weight hosts: " + Host.getSumWeight());

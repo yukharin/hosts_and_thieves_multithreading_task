@@ -2,7 +2,8 @@ package com.yukharin.hosts_and_thieves.threads;
 
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Host;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
@@ -17,7 +18,7 @@ public class HostThread implements Runnable {
     private Semaphore semaphore;
     private CyclicBarrier barrier;
     private AtomicInteger counter;
-    private static Logger logger = Logger.getLogger(HostThread.class);
+    private static Logger logger = LogManager.getLogger(HostThread.class);
 
 
     public HostThread(Host host, Home home, Semaphore semaphore, CyclicBarrier barrier, AtomicInteger counter) {

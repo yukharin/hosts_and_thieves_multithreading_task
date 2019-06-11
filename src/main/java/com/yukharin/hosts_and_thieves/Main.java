@@ -6,11 +6,12 @@ import com.yukharin.hosts_and_thieves.entities.Thief;
 import com.yukharin.hosts_and_thieves.threads.HostThread;
 import com.yukharin.hosts_and_thieves.threads.ThiefThread;
 import com.yukharin.hosts_and_thieves.utils.Utils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class Main {
 
@@ -28,8 +29,7 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
-        Logger logger = Logger.getLogger(Main.class);
-        BasicConfigurator.configure();
+        Logger logger = LogManager.getLogger(Main.class);
         long startingTime = System.currentTimeMillis();
         logger.info("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
