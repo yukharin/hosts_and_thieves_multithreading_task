@@ -1,7 +1,7 @@
 package com.yukharin.thieves;
 
 import com.yukharin.bags.Bag;
-import com.yukharin.comparators.ItemComparator;
+import com.yukharin.comparators.ItemValueComparator;
 import com.yukharin.homes.Home;
 import com.yukharin.items.Item;
 
@@ -23,7 +23,7 @@ public class Thief {
         while (iterator.hasNext()) {
             itemsToSteal.add(iterator.next());
         }
-        itemsToSteal.sort(new ItemComparator().reversed());
+        itemsToSteal.sort(new ItemValueComparator().reversed());
         putIntoBag(home, itemsToSteal);
     }
 

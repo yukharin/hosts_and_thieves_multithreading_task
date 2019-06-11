@@ -4,7 +4,7 @@ import com.yukharin.items.Item;
 
 import java.util.Comparator;
 
-public class ItemComparator implements Comparator<Item> {
+public class ItemValueComparator implements Comparator<Item> {
 
 
     @Override
