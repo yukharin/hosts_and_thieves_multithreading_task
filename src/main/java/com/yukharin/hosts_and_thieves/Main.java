@@ -6,15 +6,18 @@ import com.yukharin.hosts_and_thieves.entities.Thief;
 import com.yukharin.hosts_and_thieves.threads.HostThread;
 import com.yukharin.hosts_and_thieves.threads.ThiefThread;
 import com.yukharin.hosts_and_thieves.utils.Utils;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
-    private static final int HOSTS = 100;
-    private static final int THIEVES = 100;
-    private static final int ITEMS_PER_HOST = 100;
+
+    private static final int HOSTS = 50;
+    private static final int THIEVES = 50;
+    private static final int ITEMS_PER_HOST = 5;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final Home home = new Home();
@@ -25,8 +28,10 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
+        Logger logger = Logger.getLogger(Main.class);
+        BasicConfigurator.configure();
         long startingTime = System.currentTimeMillis();
-        System.out.println("Starting time: " + startingTime);
+        logger.info("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         for (int i = 0; i < HOSTS; i++) {
             service.submit(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, barrier, threadsCounter));
@@ -37,8 +42,8 @@ public class Main {
         service.shutdown();
         service.awaitTermination(3, TimeUnit.MINUTES);
         long endingTime = System.currentTimeMillis();
-        System.out.println("Ending time: " + endingTime);
-        System.out.println("Perfomance: " + (endingTime - startingTime) + " millis");
+        logger.info("Ending time: " + endingTime);
+        logger.info("Perfomance: " + (endingTime - startingTime) + " millis");
     }
 
 }

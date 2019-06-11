@@ -4,6 +4,8 @@ import com.yukharin.hosts_and_thieves.entities.Bag;
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Host;
 import com.yukharin.hosts_and_thieves.entities.Item;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Random;
 
 public class Utils {
 
+    private static Logger logger = Logger.getLogger(Utils.class);
     private static final int LOWER_WEIGHT = 5;
     private static final int UPPER_WEIGHT = 30;
     private static final int LOWER_VALUE = 15;
@@ -31,12 +34,13 @@ public class Utils {
     }
 
     public static void printInfo(Home home) {
+        BasicConfigurator.configure();
         home.updateAggregationValues();
-        System.out.println("Sum value hosts: " + Host.getSumValue());
-        System.out.println("Sum weight hosts: " + Host.getSumWeight());
-        System.out.println("Sum value home: " + home.getSumValue());
-        System.out.println("Sum weight home: " + home.getSumWeight());
-        System.out.println("Sum value thieves: " + Bag.getSumValue());
-        System.out.println("Sum weight thieves: " + Bag.getSumWeight());
+        logger.info("Sum value hosts: " + Host.getSumValue());
+        logger.info("Sum weight hosts: " + Host.getSumWeight());
+        logger.info("Sum value home: " + home.getSumValue());
+        logger.info("Sum weight home: " + home.getSumWeight());
+        logger.info("Sum value thieves: " + Bag.getSumValue());
+        logger.info("Sum weight thieves: " + Bag.getSumWeight());
     }
 }

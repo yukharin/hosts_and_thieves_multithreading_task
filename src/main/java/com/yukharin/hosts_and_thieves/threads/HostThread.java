@@ -2,6 +2,7 @@ package com.yukharin.hosts_and_thieves.threads;
 
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Host;
+import org.apache.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
@@ -16,6 +17,7 @@ public class HostThread implements Runnable {
     private Semaphore semaphore;
     private CyclicBarrier barrier;
     private AtomicInteger counter;
+    private static Logger logger = Logger.getLogger(HostThread.class);
 
 
     public HostThread(Host host, Home home, Semaphore semaphore, CyclicBarrier barrier, AtomicInteger counter) {
@@ -33,7 +35,7 @@ public class HostThread implements Runnable {
             putItems();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
+            logger.debug(e);
         }
     }
 
@@ -43,7 +45,7 @@ public class HostThread implements Runnable {
             try {
                 counter.incrementAndGet();
                 host.putItem(home);
-                System.out.println("Hosts inside home: " + counter.intValue());
+                logger.info("Hosts inside home: " + counter.intValue());
                 counter.decrementAndGet();
             } finally {
                 semaphore.release();
@@ -56,7 +58,7 @@ public class HostThread implements Runnable {
         try {
             counter.incrementAndGet();
             host.putItems(home);
-            System.out.println("Hosts inside home: " + counter.intValue());
+            logger.info("Hosts inside home: " + counter.intValue());
             counter.decrementAndGet();
         } finally {
             semaphore.release();

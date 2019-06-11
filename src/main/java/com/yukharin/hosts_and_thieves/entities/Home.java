@@ -1,5 +1,7 @@
 package com.yukharin.hosts_and_thieves.entities;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 public class Home implements Iterable<Item> {
@@ -7,6 +9,7 @@ public class Home implements Iterable<Item> {
     private final List<Item> items;
     private int sumValue;
     private int sumWeight;
+    private static Logger logger = Logger.getLogger(Home.class);
 
     public Home() {
         items = Collections.synchronizedList(new ArrayList<>());
@@ -14,12 +17,12 @@ public class Home implements Iterable<Item> {
 
     public void addItem(Item item) {
         items.add(Objects.requireNonNull(item));
-        System.out.println(Thread.currentThread().getName() + " adding item ");
+        logger.info(Thread.currentThread().getName() + " adding item ");
     }
 
     public void removeItem(Item item) {
         items.remove(item);
-        System.out.println(Thread.currentThread().getName() + " removing item ");
+        logger.info(Thread.currentThread().getName() + " removing item ");
     }
 
     public int countItems() {

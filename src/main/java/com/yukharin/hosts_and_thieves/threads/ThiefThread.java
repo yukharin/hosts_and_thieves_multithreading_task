@@ -2,6 +2,7 @@ package com.yukharin.hosts_and_thieves.threads;
 
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Thief;
+import org.apache.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
@@ -18,6 +19,7 @@ public class ThiefThread implements Runnable {
     private Semaphore semaphore;
     private CyclicBarrier barrier;
     private AtomicInteger counter;
+    private static Logger logger = Logger.getLogger(ThiefThread.class);
 
 
     public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier, AtomicInteger counter) {
@@ -36,7 +38,7 @@ public class ThiefThread implements Runnable {
             stealAll();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
+            logger.debug(e);
         }
     }
 
@@ -47,7 +49,7 @@ public class ThiefThread implements Runnable {
             try {
                 counter.incrementAndGet();
                 thief.steal(home);
-                System.out.println("Thieves inside home: " + counter.intValue());
+                logger.info("Thieves inside home: " + counter.intValue());
                 counter.decrementAndGet();
             } finally {
                 semaphore.release(permits);
@@ -61,7 +63,7 @@ public class ThiefThread implements Runnable {
         try {
             counter.incrementAndGet();
             thief.stealAll(home);
-            System.out.println("Thieves inside home: " + counter.intValue());
+            logger.info("Thieves inside home: " + counter.intValue());
             counter.decrementAndGet();
         } finally {
             semaphore.release(permits);
