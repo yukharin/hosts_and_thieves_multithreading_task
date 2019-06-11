@@ -1,42 +1,43 @@
-package com.yukharin;
+package com.yukharin.hosts_and_thieves;
 
-import com.yukharin.homes.Home;
-import com.yukharin.host_threads.HostThread;
-import com.yukharin.hosts.Host;
-import com.yukharin.thief_threads.ThiefThread;
-import com.yukharin.thieves.Thief;
-import com.yukharin.utils.Utils;
+import com.yukharin.hosts_and_thieves.entities.Home;
+import com.yukharin.hosts_and_thieves.entities.Host;
+import com.yukharin.hosts_and_thieves.entities.Thief;
+import com.yukharin.hosts_and_thieves.threads.HostThread;
+import com.yukharin.hosts_and_thieves.threads.ThiefThread;
+import com.yukharin.hosts_and_thieves.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
-    private static final int HOSTS = 200;
+    private static final int HOSTS = 100;
     private static final int THIEVES = 100;
-    private static final int ITEMS_PER_HOST = 3;
+    private static final int ITEMS_PER_HOST = 100;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
+    private static final Home home = new Home();
     private static final Runnable task = () ->
-            Utils.printInfo();
+            Utils.printInfo(home);
     private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS, task);
+    private static final AtomicInteger threadsCounter = new AtomicInteger();
 
 
     public static void main(String[] args) throws InterruptedException {
-        Home home = new Home();
+        long startingTime = System.currentTimeMillis();
+        System.out.println("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
-        List<Callable<Void>> threads = new ArrayList<>();
         for (int i = 0; i < HOSTS; i++) {
-            threads.add(new HostThread(new Host(home, ITEMS_PER_HOST), semaphore, barrier));
+            service.submit(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, barrier, threadsCounter));
         }
         for (int i = 0; i < THIEVES; i++) {
-            threads.add(new ThiefThread(new Thief(), home, semaphore, HOSTS, barrier));
+            service.submit(new ThiefThread(new Thief(), home, semaphore, HOSTS, barrier, threadsCounter));
         }
-        Collections.shuffle(threads);
-        service.invokeAll(threads);
         service.shutdown();
+        service.awaitTermination(3, TimeUnit.MINUTES);
+        long endingTime = System.currentTimeMillis();
+        System.out.println("Ending time: " + endingTime);
+        System.out.println("Perfomance: " + (endingTime - startingTime) / 1000 + " sec");
     }
-
 }

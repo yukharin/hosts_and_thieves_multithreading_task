@@ -1,47 +1,23 @@
-package com.yukharin;
+package com.yukharin.hosts_and_thieves.algorithms;
 
-import com.yukharin.items.Item;
+import com.yukharin.hosts_and_thieves.entities.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Algorithm {
+public class KnapsackProblem {
 
-
-    private static final int WEIGHT = 4;
-
-    public static void main(String[] args) {
-
-//        int profit[] = {200, 240, 140, 150};
-//        int weight[] = {1, 3, 2, 5};
-
-        List<Item> items = new ArrayList<>();
-        Item first = new Item(2, 2000);
-        Item second = new Item(1, 5000);
-        Item third = new Item(3, 500);
-        Item forth = new Item(1, 1000);
-        Item fifth = new Item(3, 3000);
-        Item sixth = new Item(2, 4000);
-        Item seventh = new Item(1, 3000);
-        items.add(first);
-        items.add(second);
-        items.add(third);
-        items.add(forth);
-        items.add(fifth);
-        items.add(sixth);
-        items.add(seventh);
-        solveKnapsackProblem(items, WEIGHT);
+    private KnapsackProblem() {
     }
-
 
     public static List<Item> solveKnapsackProblem(List<Item> allItems, int columns) {
         int rows = allItems.size();
+        List<Item> selectedItems;
         List<Item>[][] itemsTable = new List[rows + 1][columns + 1];
         initZeroItems(itemsTable, columns);
-        List<Item> result = findOptimalList(allItems, itemsTable, rows, columns);
-        removeZeroItems(result);
-        System.out.println(result);
-        return result;
+        selectedItems = findOptimalList(allItems, itemsTable, rows, columns);
+        removeZeroItems(selectedItems);
+        return selectedItems;
     }
 
     private static List<Item> findOptimalList(List<Item> allItems, List<Item>[][] itemsTable, int rows, int columns) {
@@ -62,8 +38,8 @@ public class Algorithm {
                 }
             }
         }
-        List<Item> result = itemsTable[rows][columns];
-        return result;
+        List<Item> selectedItems = itemsTable[rows][columns];
+        return selectedItems;
     }
 
     private static void initZeroItems(List<Item>[][] itemsTable, int columns) {
@@ -95,6 +71,4 @@ public class Algorithm {
         }
         return (firstValue > secondValue) ? firstList : secondList;
     }
-
 }
-

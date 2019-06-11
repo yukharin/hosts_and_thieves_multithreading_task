@@ -1,23 +1,24 @@
-package com.yukharin.bags;
 
-import com.yukharin.items.Item;
+package com.yukharin.hosts_and_thieves.entities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bag implements Iterable<Item> {
 
     private static AtomicInteger sumValue = new AtomicInteger();
     private static AtomicInteger sumWeight = new AtomicInteger();
-    private static final int WEIGHT_LIMIT = 100;
+    private final int maxWeight;
     private List<Item> items;
     private int currentWeight;
 
 
-    public Bag() {
+    public Bag(int maxWeight) {
         this.items = new ArrayList<>();
+        this.maxWeight = maxWeight;
     }
 
     public static int getSumValue() {
@@ -28,18 +29,34 @@ public class Bag implements Iterable<Item> {
         return sumWeight.intValue();
     }
 
-    public boolean add(Item item) {
-        if (item.getWeight() + currentWeight >= WEIGHT_LIMIT) {
-            return false;
-        } else {
+    public void add(Item item) {
+        Objects.requireNonNull(item);
+        if (!isEnoughSpace(item)) {
+            throw new IllegalArgumentException("Item is too heavy for this bag");
+        }
+        items.add(item);
+        currentWeight += item.getWeight();
+        sumValue.addAndGet(item.getValue());
+        sumWeight.addAndGet(item.getWeight());
+    }
+
+    public void addAll(List<Item> itemsToSteal) {
+        Objects.requireNonNull(itemsToSteal);
+        for (Item item : itemsToSteal) {
+            if (!isEnoughSpace(item)) {
+                throw new IllegalArgumentException("Item is too heavy for this bag");
+            }
             items.add(item);
             currentWeight += item.getWeight();
             sumValue.addAndGet(item.getValue());
             sumWeight.addAndGet(item.getWeight());
-            return true;
         }
     }
 
+    public boolean isEnoughSpace(Item item) {
+        Objects.requireNonNull(item);
+        return (item.getWeight() + currentWeight <= maxWeight);
+    }
 
     @Override
     public Iterator<Item> iterator() {
@@ -50,6 +67,4 @@ public class Bag implements Iterable<Item> {
     public String toString() {
         return "items " + items.toString() + ", current weight: " + currentWeight;
     }
-
-
 }

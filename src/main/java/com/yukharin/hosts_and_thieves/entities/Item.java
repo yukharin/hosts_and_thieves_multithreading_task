@@ -1,6 +1,6 @@
-package com.yukharin.items;
+package com.yukharin.hosts_and_thieves.entities;
 
-public class Item {
+public class Item implements Comparable<Item> {
 
     private int weight;
     private int value;
@@ -22,12 +22,9 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
-
         Item item = (Item) o;
-
         if (weight != item.weight) return false;
         return value == item.value;
-
     }
 
     @Override
@@ -43,5 +40,10 @@ public class Item {
                 "weight=" + weight +
                 ", value=" + value +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Item item) {
+        return Integer.compare(value, item.getValue());
     }
 }
