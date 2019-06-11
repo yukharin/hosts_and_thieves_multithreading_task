@@ -38,6 +38,7 @@ public class Main {
         service.awaitTermination(3, TimeUnit.MINUTES);
         long endingTime = System.currentTimeMillis();
         System.out.println("Ending time: " + endingTime);
-        System.out.println("Perfomance: " + (endingTime - startingTime) / 1000 + " sec");
+        System.out.println("Perfomance: " + (endingTime - startingTime) + " millis");
     }
+
 }
