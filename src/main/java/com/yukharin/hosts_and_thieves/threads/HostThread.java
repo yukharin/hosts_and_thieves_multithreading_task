@@ -30,7 +30,7 @@ public class HostThread implements Runnable {
     public void run() {
         try {
             barrier.await();
-            putItem();
+            putItems();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
@@ -65,4 +65,3 @@ public class HostThread implements Runnable {
 
 
 }
-

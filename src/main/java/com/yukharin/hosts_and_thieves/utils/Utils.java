@@ -11,13 +11,13 @@ import java.util.Random;
 
 public class Utils {
 
-    private Utils() {
-    }
-
     private static final int LOWER_WEIGHT = 5;
     private static final int UPPER_WEIGHT = 30;
     private static final int LOWER_VALUE = 15;
     private static final int UPPER_VALUE = 150;
+
+    private Utils() {
+    }
 
     public static List<Item> generateItems(int count) {
         List<Item> items = new ArrayList<>(count);
@@ -40,4 +40,3 @@ public class Utils {
         System.out.println("Sum weight thieves: " + Bag.getSumWeight());
     }
 }
-

@@ -11,13 +11,13 @@ public class Host {
 
     private static AtomicInteger sumValue;
     private static AtomicInteger sumWeight;
-    private List<Item> items;
-
 
     static {
         sumWeight = new AtomicInteger();
         sumValue = new AtomicInteger();
     }
+
+    private List<Item> items;
 
     public Host(int count) {
         this.items = Objects.requireNonNull(Utils.generateItems(count));

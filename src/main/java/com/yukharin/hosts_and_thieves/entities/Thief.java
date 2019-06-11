@@ -1,46 +1,51 @@
 package com.yukharin.hosts_and_thieves.entities;
 
-import com.yukharin.hosts_and_thieves.comparators.ItemComparator;
+import com.yukharin.hosts_and_thieves.algorithms.KnapsackProblem;
+import com.yukharin.hosts_and_thieves.comparators.ItemValueComparator;
 
 import java.util.*;
 
 public class Thief {
 
-    private static final Comparator<Item> itemComparator = new ItemComparator().reversed();
+    private static final Comparator<Item> itemComparator = new ItemValueComparator().reversed();
+    private static final int WEIGHT_LIMIT = 100;
     private Bag bag;
     private boolean isFull;
 
     public Thief() {
-        this.bag = new Bag();
+        this.bag = new Bag(WEIGHT_LIMIT);
     }
 
     public void stealAll(Home home) {
         Objects.requireNonNull(home);
-        List<Item> allItems = getSortedItems(home);
-        putAndRemoveItems(home, allItems);
+        List<Item> allItems = getAllItems(home);
+        List<Item> selectedItems = KnapsackProblem.solveKnapsackProblem(allItems, WEIGHT_LIMIT);
+        putAndRemoveItems(home, selectedItems);
     }
 
     public void steal(Home home) {
         Objects.requireNonNull(home);
-        Item item = getMostValuable(home);
+        List<Item> allItems = getAllItems(home);
+        Item item = getMostValuable(allItems);
         putAndRemoveItem(home, item);
     }
 
-    private List<Item> getSortedItems(Home home) {
-        ArrayList<Item> sortedItems = new ArrayList<>(home.countItems());
+    private List<Item> getAllItems(Home home) {
+        ArrayList<Item> allItems = new ArrayList<>(home.countItems());
         Iterator<Item> iterator = home.iterator();
         while (iterator.hasNext()) {
-            sortedItems.add(iterator.next());
+            allItems.add(iterator.next());
         }
-        sortedItems.sort(itemComparator);
-        return sortedItems;
+        return allItems;
     }
 
-    private Item getMostValuable(Home home) {
+    private void sortItems(List<Item> items) {
+        items.sort(itemComparator);
+    }
+
+    private Item getMostValuable(List<Item> allItems) {
         Item maxItem = new Item(0, 0);
-        Iterator<Item> iterator = home.iterator();
-        while (iterator.hasNext()) {
-            Item item = iterator.next();
+        for (Item item : allItems) {
             if ((maxItem.compareTo(item)) < 0) {
                 maxItem = item;
             }

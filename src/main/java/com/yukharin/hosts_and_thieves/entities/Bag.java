@@ -1,3 +1,4 @@
+
 package com.yukharin.hosts_and_thieves.entities;
 
 import java.util.ArrayList;
@@ -10,13 +11,14 @@ public class Bag implements Iterable<Item> {
 
     private static AtomicInteger sumValue = new AtomicInteger();
     private static AtomicInteger sumWeight = new AtomicInteger();
-    private static final int WEIGHT_LIMIT = 100;
+    private final int maxWeight;
     private List<Item> items;
     private int currentWeight;
 
 
-    public Bag() {
+    public Bag(int maxWeight) {
         this.items = new ArrayList<>();
+        this.maxWeight = maxWeight;
     }
 
     public static int getSumValue() {
@@ -53,7 +55,7 @@ public class Bag implements Iterable<Item> {
 
     public boolean isEnoughSpace(Item item) {
         Objects.requireNonNull(item);
-        return (item.getWeight() + currentWeight <= WEIGHT_LIMIT);
+        return (item.getWeight() + currentWeight <= maxWeight);
     }
 
     @Override
@@ -65,6 +67,4 @@ public class Bag implements Iterable<Item> {
     public String toString() {
         return "items " + items.toString() + ", current weight: " + currentWeight;
     }
-
-
 }

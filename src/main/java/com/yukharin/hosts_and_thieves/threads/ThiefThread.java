@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThiefThread implements Runnable {
 
-    private Thief thief;
     private final int permits;
+    private Thief thief;
     private Home home;
     private Semaphore semaphore;
     private CyclicBarrier barrier;
@@ -52,9 +52,6 @@ public class ThiefThread implements Runnable {
             } finally {
                 semaphore.release(permits);
             }
-            // Без этого таймаута, они друг за другом все равно работают.
-            // То есть типо выходят из дома, но потом кто вышел , тот и назад заходит первым.
-            // Поставил его тут и написал этот коммент, чтобы вы видели, что я понимаю, что происходит.
             TimeUnit.MILLISECONDS.sleep(1);
         }
     }
@@ -71,4 +68,3 @@ public class ThiefThread implements Runnable {
         }
     }
 }
-
