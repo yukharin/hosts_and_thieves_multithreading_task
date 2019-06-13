@@ -18,7 +18,7 @@ public class Main {
 
     private static final int HOSTS = 100;
     private static final int THIEVES = 100;
-    private static final int ITEMS_PER_HOST = 50;
+    private static final int ITEMS_PER_HOST = 5;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final Home home = new Home();
@@ -31,7 +31,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         long startingTime = System.currentTimeMillis();
         logger.info("Starting time: " + startingTime);
-        ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS + 10);
+        ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         for (int i = 0; i < HOSTS; i++) {
             service.submit(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, barrier, threadsCounter));
         }
