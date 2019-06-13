@@ -35,6 +35,8 @@ public class Home implements Iterable<Item> {
     }
 
     public void updateAggregationValues() {
+        this.sumWeight = 0;
+        this.sumValue = 0;
         for (Item item : items) {
             sumWeight += item.getWeight();
             sumValue += item.getValue();
