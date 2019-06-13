@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,6 +40,7 @@ public class Main {
             threads.add(new ThiefThread(new Thief(), home, semaphore, HOSTS, latch, threadsCounter));
         }
         Utils.printInfo(home);
+        Collections.shuffle(threads);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         for (Runnable runnable : threads) {
             service.submit(runnable);
