@@ -8,28 +8,28 @@ import java.util.*;
 public final class Thief {
 
     private static final Comparator<Item> itemComparator = new ItemValueComparator().reversed();
-    private Bag bag;
+    private final Bag bag;
     private boolean isFull;
 
-    public Thief(int weight_limit) {
+    public Thief(final int weight_limit) {
         this.bag = new Bag(weight_limit);
     }
 
-    public void stealAll(Home home) {
+    public void stealAll(final Home home) {
         Objects.requireNonNull(home);
         List<Item> allItems = getAllItems(home);
         List<Item> selectedItems = KnapsackProblem.solveKnapsackProblem(allItems, bag.getMaxWeight());
         putAndRemoveItems(home, selectedItems);
     }
 
-    public void steal(Home home) {
+    public void steal(final Home home) {
         Objects.requireNonNull(home);
         List<Item> allItems = getAllItems(home);
         Item item = getMostValuable(allItems);
         putAndRemoveItem(home, item);
     }
 
-    private List<Item> getAllItems(Home home) {
+    private List<Item> getAllItems(final Home home) {
         ArrayList<Item> allItems = new ArrayList<>(home.countItems());
         Iterator<Item> iterator = home.iterator();
         while (iterator.hasNext()) {
@@ -38,11 +38,11 @@ public final class Thief {
         return allItems;
     }
 
-    private void sortItems(List<Item> items) {
+    private void sortItems(final List<Item> items) {
         items.sort(itemComparator);
     }
 
-    private Item getMostValuable(List<Item> allItems) {
+    private Item getMostValuable(final List<Item> allItems) {
         Item maxItem = new Item(0, 0);
         for (Item item : allItems) {
             if ((maxItem.compareTo(item)) < 0) {
@@ -52,7 +52,7 @@ public final class Thief {
         return maxItem;
     }
 
-    private void putAndRemoveItems(Home home, List<Item> allItems) {
+    private void putAndRemoveItems(final Home home, final List<Item> allItems) {
         for (Item item : allItems) {
             if (bag.isEnoughSpace(item)) {
                 bag.add(item);
@@ -64,7 +64,7 @@ public final class Thief {
         }
     }
 
-    private void putAndRemoveItem(Home home, Item item) {
+    private void putAndRemoveItem(final Home home, final Item item) {
         if (bag.isEnoughSpace(item)) {
             bag.add(item);
             home.removeItem(item);

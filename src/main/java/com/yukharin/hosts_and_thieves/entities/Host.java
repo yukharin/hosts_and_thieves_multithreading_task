@@ -35,7 +35,7 @@ public final class Host {
         return sumWeight.intValue();
     }
 
-    public void putItems(Home home) {
+    public void putItems(final Home home) {
         Objects.requireNonNull(home);
         Iterator<Item> iterator = items.iterator();
         while (iterator.hasNext()) {
@@ -47,7 +47,7 @@ public final class Host {
         }
     }
 
-    public void putItem(Home home) {
+    public void putItem(final Home home) {
         Objects.requireNonNull(home);
         Iterator<Item> iterator = items.iterator();
         if (iterator.hasNext()) {

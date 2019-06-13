@@ -2,10 +2,10 @@ package com.yukharin.hosts_and_thieves.entities;
 
 public final class Item implements Comparable<Item> {
 
-    private int weight;
-    private int value;
+    private final int weight;
+    private final int value;
 
-    public Item(int weight, int value) {
+    public Item(final int weight, final int value) {
         this.weight = weight;
         this.value = value;
     }

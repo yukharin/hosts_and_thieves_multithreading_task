@@ -6,35 +6,35 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ThiefThread implements Runnable {
 
+
+    private static final Logger logger = LogManager.getLogger(ThiefThread.class);
+    private final Thief thief;
+    private final Home home;
+    private final Semaphore semaphore;
+    private final AtomicInteger counter;
     private final int permits;
-    private Thief thief;
-    private Home home;
-    private Semaphore semaphore;
-    private CountDownLatch latch;
-    private AtomicInteger counter;
-    private static Logger logger = LogManager.getLogger(ThiefThread.class);
+    private final Phaser phaser;
 
 
-    public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CountDownLatch latch, AtomicInteger counter) {
+    public ThiefThread(final Thief thief, final Home home, final Semaphore semaphore, final int permits, final AtomicInteger counter, final Phaser phaser) {
         this.thief = Objects.requireNonNull(thief);
         this.home = Objects.requireNonNull(home);
         this.semaphore = Objects.requireNonNull(semaphore);
-        this.latch = Objects.requireNonNull(latch);
         this.counter = Objects.requireNonNull(counter);
+        this.phaser = Objects.requireNonNull(phaser);
         this.permits = permits;
     }
 
     @Override
     public void run() {
         try {
-            latch.countDown();
-            latch.await();
+            phaser.arriveAndAwaitAdvance();
             stealAll();
         } catch (InterruptedException e) {
             logger.warn(e);

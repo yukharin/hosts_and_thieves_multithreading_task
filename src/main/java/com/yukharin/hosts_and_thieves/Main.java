@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,17 +18,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 
     // Numeric constants
-    private static final int HOSTS = 15;
-    private static final int THIEVES = 30;
-    private static final int WEIGHT_LIMIT = 100;
-    private static final int ITEMS_PER_HOST = 5;
+    private static final int HOSTS = 100;
+    private static final int THIEVES = 100;
+    private static final int WEIGHT_LIMIT = 200;
+    private static final int ITEMS_PER_HOST = 20;
     private static final int TIMEOUT = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
 
     // Semaphore, CountDownLatch and AtomicInteger counter
     private static final Semaphore semaphore = new Semaphore(HOSTS);
-    private static final CountDownLatch latch = new CountDownLatch(TOTAL_THREADS);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
+    private static final Phaser phaser = new Phaser(TOTAL_THREADS);
 
     // An Instance of a home class, List of threads and pool of threads
     private static final Home home = new Home();
@@ -43,12 +42,12 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        long startingTime = System.currentTimeMillis();
+
+        final long startingTime = System.currentTimeMillis();
 
         // Initialization
         initThieves(THIEVES);
         initHosts(HOSTS);
-        Collections.shuffle(allThreads);
 
         // Printing some statistics before execution
         printStatistics();
@@ -67,21 +66,21 @@ public class Main {
         // Printing some statistics after execution
         printStatistics();
 
-        long endingTime = System.currentTimeMillis();
+        final long endingTime = System.currentTimeMillis();
 
         // Printing perfomance of an application
         logger.info("Perfomance: " + (endingTime - startingTime) + " millis");
     }
 
-    private static void initHosts(int hosts) {
+    private static void initHosts(final int hosts) {
         for (int i = 0; i < hosts; i++) {
-            allThreads.add(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, latch, threadsCounter));
+            allThreads.add(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, threadsCounter, phaser));
         }
     }
 
-    private static void initThieves(int thieves) {
+    private static void initThieves(final int thieves) {
         for (int i = 0; i < THIEVES; i++) {
-            allThreads.add(new ThiefThread(new Thief(WEIGHT_LIMIT), home, semaphore, HOSTS, latch, threadsCounter));
+            allThreads.add(new ThiefThread(new Thief(WEIGHT_LIMIT), home, semaphore, HOSTS, threadsCounter, phaser));
         }
     }
 

@@ -6,24 +6,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class HostThread implements Runnable {
 
-    private Host host;
-    private Home home;
-    private Semaphore semaphore;
-    private CountDownLatch latch;
-    private AtomicInteger counter;
-    private static Logger logger = LogManager.getLogger(HostThread.class);
+    private static final Logger logger = LogManager.getLogger(HostThread.class);
+    private final Host host;
+    private final Home home;
+    private final Semaphore semaphore;
+    private final AtomicInteger counter;
+    private final Phaser phaser;
 
 
-    public HostThread(Host host, Home home, Semaphore semaphore, CountDownLatch latch, AtomicInteger counter) {
+    public HostThread(final Host host, final Home home, final Semaphore semaphore, final AtomicInteger counter, final Phaser phaser) {
         this.host = Objects.requireNonNull(host);
         this.semaphore = Objects.requireNonNull(semaphore);
-        this.latch = Objects.requireNonNull(latch);
+        this.phaser = Objects.requireNonNull(phaser);
         this.counter = Objects.requireNonNull(counter);
         this.home = Objects.requireNonNull(home);
     }
@@ -31,8 +31,7 @@ public final class HostThread implements Runnable {
     @Override
     public void run() {
         try {
-            latch.countDown();
-            latch.await();
+            phaser.arriveAndAwaitAdvance();
             putItems();
         } catch (InterruptedException e) {
             logger.warn(e);
