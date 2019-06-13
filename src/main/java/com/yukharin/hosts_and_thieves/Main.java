@@ -39,12 +39,14 @@ public class Main {
         for (int i = 0; i < THIEVES; i++) {
             threads.add(new ThiefThread(new Thief(), home, semaphore, HOSTS, latch, threadsCounter));
         }
+        Collections.shuffle(threads);
         Utils.printInfo(home);
         Collections.shuffle(threads);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
         for (Runnable runnable : threads) {
             service.submit(runnable);
         }
+        latch.await();
         service.shutdown();
         service.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
         Utils.printInfo(home);

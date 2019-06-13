@@ -34,7 +34,6 @@ public class ThiefThread implements Runnable {
     public void run() {
         try {
             latch.countDown();
-            latch.await();
             stealAll();
         } catch (InterruptedException e) {
             logger.warn(e);
