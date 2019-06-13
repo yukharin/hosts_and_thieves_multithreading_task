@@ -25,14 +25,17 @@ public class Main {
     private static final int ITEMS_PER_HOST = 5;
     private static final int TIMEOUT = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
+
     // Semaphore, CountDownLatch and AtomicInteger counter
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final CountDownLatch latch = new CountDownLatch(TOTAL_THREADS);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
+
     // An Instance of a home class, List of threads and pool of threads
     private static final Home home = new Home();
     private static final List<Runnable> allThreads = new ArrayList<>(TOTAL_THREADS);
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(TOTAL_THREADS);
+
     // An Instance of a logger to log some useful information
     private static final Logger logger = LogManager.getLogger(Main.class);
 
@@ -42,26 +45,26 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         long startingTime = System.currentTimeMillis();
 
-        // Initialization process
+        // Initialization
         initThieves(THIEVES);
         initHosts(HOSTS);
         Collections.shuffle(allThreads);
 
-        // Process of printing some statistics before execution
+        // Printing some statistics before execution
         printStatistics();
 
-        // Process of sending tasks to thread pool for execution
+        // Sending tasks to thread pool for execution
         for (Runnable runnable : allThreads) {
             threadPool.submit(runnable);
         }
 
-        // Process of shutting pool down after execution
+        // Shutting pool down after execution
         threadPool.shutdown();
 
-        // Process of waiting until all tasks have completed
+        // Waiting until all tasks have completed
         threadPool.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
 
-        // Process of printing some statistics after execution
+        // Printing some statistics after execution
         printStatistics();
 
         long endingTime = System.currentTimeMillis();
