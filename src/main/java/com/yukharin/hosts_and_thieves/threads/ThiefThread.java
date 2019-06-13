@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ThiefThread implements Runnable {
+public final class ThiefThread implements Runnable {
 
     private final int permits;
     private Thief thief;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Bag implements Iterable<Item> {
+public final class Bag implements Iterable<Item> {
 
     private static AtomicInteger sumValue = new AtomicInteger();
     private static AtomicInteger sumWeight = new AtomicInteger();
@@ -16,7 +16,7 @@ public class Bag implements Iterable<Item> {
     private int currentWeight;
 
 
-    public Bag(int maxWeight) {
+    Bag(int maxWeight) {
         this.items = new ArrayList<>();
         this.maxWeight = maxWeight;
     }
@@ -56,6 +56,10 @@ public class Bag implements Iterable<Item> {
     public boolean isEnoughSpace(Item item) {
         Objects.requireNonNull(item);
         return (item.getWeight() + currentWeight <= maxWeight);
+    }
+
+    public int getMaxWeight() {
+        return maxWeight;
     }
 
     @Override

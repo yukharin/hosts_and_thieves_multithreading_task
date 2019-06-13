@@ -1,6 +1,6 @@
 package com.yukharin.hosts_and_thieves.entities;
 
-public class Item implements Comparable<Item> {
+public final class Item implements Comparable<Item> {
 
     private int weight;
     private int value;

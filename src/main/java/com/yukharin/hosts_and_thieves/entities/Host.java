@@ -7,15 +7,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Host {
+public final class Host {
 
-    private static AtomicInteger sumValue;
-    private static AtomicInteger sumWeight;
+    private static AtomicInteger sumValue = new AtomicInteger();
+    private static AtomicInteger sumWeight = new AtomicInteger();
 
-    static {
-        sumWeight = new AtomicInteger();
-        sumValue = new AtomicInteger();
-    }
 
     private List<Item> items;
 

@@ -5,7 +5,8 @@ import com.yukharin.hosts_and_thieves.entities.Item;
 
 import java.util.Comparator;
 
-public class ItemValueComparator implements Comparator<Item> {
+public final class ItemValueComparator implements Comparator<Item> {
+
 
     @Override
     public int compare(Item o1, Item o2) {

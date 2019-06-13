@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HostThread implements Runnable {
+public final class HostThread implements Runnable {
 
     private Host host;
     private Home home;

@@ -5,21 +5,20 @@ import com.yukharin.hosts_and_thieves.comparators.ItemValueComparator;
 
 import java.util.*;
 
-public class Thief {
+public final class Thief {
 
     private static final Comparator<Item> itemComparator = new ItemValueComparator().reversed();
-    private static final int WEIGHT_LIMIT = 100;
     private Bag bag;
     private boolean isFull;
 
-    public Thief() {
-        this.bag = new Bag(WEIGHT_LIMIT);
+    public Thief(int weight_limit) {
+        this.bag = new Bag(weight_limit);
     }
 
     public void stealAll(Home home) {
         Objects.requireNonNull(home);
         List<Item> allItems = getAllItems(home);
-        List<Item> selectedItems = KnapsackProblem.solveKnapsackProblem(allItems, WEIGHT_LIMIT);
+        List<Item> selectedItems = KnapsackProblem.solveKnapsackProblem(allItems, bag.getMaxWeight());
         putAndRemoveItems(home, selectedItems);
     }
 

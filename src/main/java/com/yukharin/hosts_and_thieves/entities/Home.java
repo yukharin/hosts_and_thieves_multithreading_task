@@ -4,25 +4,32 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Home implements Iterable<Item> {
+public final class Home implements Iterable<Item> {
 
     private final List<Item> items;
-    private int sumValue;
-    private int sumWeight;
+    private AtomicInteger sumValue;
+    private AtomicInteger sumWeight;
     private static Logger logger = LogManager.getLogger(Home.class);
 
     public Home() {
         items = Collections.synchronizedList(new ArrayList<>());
+        sumValue = new AtomicInteger();
+        sumWeight = new AtomicInteger();
     }
 
     public void addItem(Item item) {
         items.add(Objects.requireNonNull(item));
+        sumValue.addAndGet(item.getValue());
+        sumWeight.addAndGet(item.getWeight());
         logger.info(Thread.currentThread().getName() + " adding item ");
     }
 
     public void removeItem(Item item) {
         items.remove(item);
+        sumValue.addAndGet(Math.negateExact(item.getValue()));
+        sumWeight.addAndGet(Math.negateExact(item.getWeight()));
         logger.info(Thread.currentThread().getName() + " removing item ");
     }
 
@@ -34,21 +41,12 @@ public class Home implements Iterable<Item> {
         return items.isEmpty();
     }
 
-    public void updateAggregationValues() {
-        this.sumWeight = 0;
-        this.sumValue = 0;
-        for (Item item : items) {
-            sumWeight += item.getWeight();
-            sumValue += item.getValue();
-        }
-    }
-
     public int getSumValue() {
-        return sumValue;
+        return sumValue.intValue();
     }
 
     public int getSumWeight() {
-        return sumWeight;
+        return sumWeight.intValue();
     }
 
     @Override
