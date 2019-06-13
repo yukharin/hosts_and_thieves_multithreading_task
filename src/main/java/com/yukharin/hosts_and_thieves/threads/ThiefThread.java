@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThiefThread implements Runnable {
@@ -39,7 +38,7 @@ public class ThiefThread implements Runnable {
             stealAll();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            logger.debug(e);
+            logger.warn(e);
         }
     }
 
@@ -55,7 +54,6 @@ public class ThiefThread implements Runnable {
             } finally {
                 semaphore.release(permits);
             }
-            TimeUnit.MILLISECONDS.sleep(1);
         }
     }
 

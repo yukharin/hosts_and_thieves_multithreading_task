@@ -36,7 +36,7 @@ public class HostThread implements Runnable {
             putItems();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            logger.debug(e);
+            logger.warn(e);
         }
     }
 
