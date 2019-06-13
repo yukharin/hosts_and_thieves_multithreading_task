@@ -10,17 +10,17 @@ public class KnapsackProblem {
     private KnapsackProblem() {
     }
 
-    public static List<Item> solveKnapsackProblem(List<Item> allItems, int columns) {
-        int rows = allItems.size();
-        List<Item> selectedItems;
-        List<Item>[][] itemsTable = new List[rows + 1][columns + 1];
+    public static List<Item> solveKnapsackProblem(final List<Item> allItems, final int columns) {
+        final int rows = allItems.size();
+        final List<Item> selectedItems;
+        final List<Item>[][] itemsTable = new List[rows + 1][columns + 1];
         initZeroItems(itemsTable, columns);
         selectedItems = findOptimalList(allItems, itemsTable, rows, columns);
         removeZeroItems(selectedItems);
         return selectedItems;
     }
 
-    private static List<Item> findOptimalList(List<Item> allItems, List<Item>[][] itemsTable, int rows, int columns) {
+    private static List<Item> findOptimalList(final List<Item> allItems, final List<Item>[][] itemsTable, final int rows, final int columns) {
         for (int row = 0; row <= rows; row++) {
             for (int column = 0; column <= columns; column++) {
                 if ((row == 0)) {
@@ -38,11 +38,10 @@ public class KnapsackProblem {
                 }
             }
         }
-        List<Item> selectedItems = itemsTable[rows][columns];
-        return selectedItems;
+        return itemsTable[rows][columns];
     }
 
-    private static void initZeroItems(List<Item>[][] itemsTable, int columns) {
+    private static void initZeroItems(final List<Item>[][] itemsTable, final int columns) {
         for (int row = 0; row < 1; row++) {
             for (int column = 0; column <= columns; column++) {
                 List<Item> zeroItems = new ArrayList<>();
@@ -52,7 +51,7 @@ public class KnapsackProblem {
         }
     }
 
-    private static void removeZeroItems(List<Item> items) {
+    private static void removeZeroItems(final List<Item> items) {
         Item item = new Item(0, 0);
         List<Item> itemsToRemove = new ArrayList<>();
         itemsToRemove.add(item);
@@ -60,7 +59,7 @@ public class KnapsackProblem {
     }
 
 
-    private static List<Item> max(List<Item> firstList, List<Item> secondList) {
+    private static List<Item> max(final List<Item> firstList, final List<Item> secondList) {
         int firstValue = 0;
         int secondValue = 0;
         for (Item item : firstList) {

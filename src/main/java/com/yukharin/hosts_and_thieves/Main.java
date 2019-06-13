@@ -20,8 +20,8 @@ public class Main {
     // Numeric constants
     private static final int HOSTS = 100;
     private static final int THIEVES = 100;
-    private static final int WEIGHT_LIMIT = 200;
-    private static final int ITEMS_PER_HOST = 20;
+    private static final int WEIGHT_LIMIT = 100;
+    private static final int ITEMS_PER_HOST = 10;
     private static final int TIMEOUT = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
 

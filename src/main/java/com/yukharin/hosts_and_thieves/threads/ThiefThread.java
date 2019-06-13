@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class ThiefThread implements Runnable {
 
 
-    private static final Logger logger = LogManager.getLogger(ThiefThread.class);
     private final Thief thief;
     private final Home home;
     private final Semaphore semaphore;
     private final AtomicInteger counter;
     private final int permits;
     private final Phaser phaser;
+    private static final Logger logger = LogManager.getLogger(ThiefThread.class);
 
 
     public ThiefThread(final Thief thief, final Home home, final Semaphore semaphore, final int permits, final AtomicInteger counter, final Phaser phaser) {

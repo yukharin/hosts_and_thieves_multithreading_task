@@ -9,18 +9,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Host {
 
-    private static AtomicInteger sumValue = new AtomicInteger();
-    private static AtomicInteger sumWeight = new AtomicInteger();
+    private final static AtomicInteger sumValue = new AtomicInteger();
+    private final static AtomicInteger sumWeight = new AtomicInteger();
 
 
     private List<Item> items;
 
-    public Host(int count) {
+    public Host(final int count) {
         this.items = Objects.requireNonNull(Utils.generateItems(count));
         generateAggregationValues(items);
     }
 
-    private static void generateAggregationValues(List<Item> items) {
+    private static void generateAggregationValues(final List<Item> items) {
         for (Item item : items) {
             sumValue.addAndGet(item.getValue());
             sumWeight.addAndGet(item.getWeight());

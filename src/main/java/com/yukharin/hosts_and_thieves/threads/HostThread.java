@@ -12,13 +12,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class HostThread implements Runnable {
 
-    private static final Logger logger = LogManager.getLogger(HostThread.class);
     private final Host host;
     private final Home home;
     private final Semaphore semaphore;
     private final AtomicInteger counter;
     private final Phaser phaser;
-
+    private static final Logger logger = LogManager.getLogger(HostThread.class);
 
     public HostThread(final Host host, final Home home, final Semaphore semaphore, final AtomicInteger counter, final Phaser phaser) {
         this.host = Objects.requireNonNull(host);

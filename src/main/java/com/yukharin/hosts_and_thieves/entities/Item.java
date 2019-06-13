@@ -43,7 +43,7 @@ public final class Item implements Comparable<Item> {
     }
 
     @Override
-    public int compareTo(Item item) {
+    public int compareTo(final Item item) {
         return Integer.compare(value, item.getValue());
     }
 }

@@ -9,14 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Bag implements Iterable<Item> {
 
-    private static AtomicInteger sumValue = new AtomicInteger();
-    private static AtomicInteger sumWeight = new AtomicInteger();
+    private final static AtomicInteger sumValue = new AtomicInteger();
+    private final static AtomicInteger sumWeight = new AtomicInteger();
     private final int maxWeight;
-    private List<Item> items;
+    private final List<Item> items;
     private int currentWeight;
 
 
-    Bag(int maxWeight) {
+    Bag(final int maxWeight) {
         this.items = new ArrayList<>();
         this.maxWeight = maxWeight;
     }
@@ -29,7 +29,7 @@ public final class Bag implements Iterable<Item> {
         return sumWeight.intValue();
     }
 
-    public void add(Item item) {
+    public void add(final Item item) {
         Objects.requireNonNull(item);
         if (!isEnoughSpace(item)) {
             throw new IllegalArgumentException("Item is too heavy for this bag");
@@ -40,7 +40,7 @@ public final class Bag implements Iterable<Item> {
         sumWeight.addAndGet(item.getWeight());
     }
 
-    public void addAll(List<Item> itemsToSteal) {
+    public void addAll(final List<Item> itemsToSteal) {
         Objects.requireNonNull(itemsToSteal);
         for (Item item : itemsToSteal) {
             if (!isEnoughSpace(item)) {
@@ -53,7 +53,7 @@ public final class Bag implements Iterable<Item> {
         }
     }
 
-    public boolean isEnoughSpace(Item item) {
+    public boolean isEnoughSpace(final Item item) {
         Objects.requireNonNull(item);
         return (item.getWeight() + currentWeight <= maxWeight);
     }
