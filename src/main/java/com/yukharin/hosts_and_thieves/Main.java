@@ -26,10 +26,10 @@ public class Main {
             Utils.printInfo(home);
     private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS, task);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
 
     public static void main(String[] args) throws InterruptedException {
-        Logger logger = LogManager.getLogger(Main.class);
         long startingTime = System.currentTimeMillis();
         logger.info("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
