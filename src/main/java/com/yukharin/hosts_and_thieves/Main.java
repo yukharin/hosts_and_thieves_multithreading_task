@@ -49,7 +49,6 @@ public class Main {
         service.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
         Utils.printInfo(home);
         long endingTime = System.currentTimeMillis();
-        logger.info("Ending time: " + endingTime);
         logger.info("Perfomance: " + (endingTime - startingTime) + " millis");
     }
 
