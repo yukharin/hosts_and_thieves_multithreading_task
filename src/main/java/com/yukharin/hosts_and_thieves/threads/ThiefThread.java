@@ -6,9 +6,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThiefThread implements Runnable {
@@ -35,6 +37,7 @@ public class ThiefThread implements Runnable {
     public void run() {
         try {
             barrier.await();
+            TimeUnit.MILLISECONDS.sleep(new Random().nextInt(10));
             stealAll();
             barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
