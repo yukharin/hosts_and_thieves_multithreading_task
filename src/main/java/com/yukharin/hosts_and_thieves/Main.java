@@ -24,7 +24,10 @@ public class Main {
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final Home home = new Home();
-    private static final Runnable task = () -> Utils.printInfo(home);
+    private static final Runnable task = () -> {
+        Utils.printInfo(home);
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+    };
     private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS, task);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
     private static final Logger logger = LogManager.getLogger(Main.class);
