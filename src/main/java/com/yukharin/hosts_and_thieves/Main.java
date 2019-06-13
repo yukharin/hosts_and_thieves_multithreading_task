@@ -23,7 +23,7 @@ public class Main {
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final Home home = new Home();
     private static final Runnable task = () -> Utils.printInfo(home);
-    private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS, task);
+    private static final CyclicBarrier barrier = new CyclicBarrier(TOTAL_THREADS);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
     private static final Logger logger = LogManager.getLogger(Main.class);
 
@@ -32,12 +32,14 @@ public class Main {
         long startingTime = System.currentTimeMillis();
         logger.info("Starting time: " + startingTime);
         ExecutorService service = Executors.newFixedThreadPool(TOTAL_THREADS);
+        service.submit(task);
         for (int i = 0; i < HOSTS; i++) {
             service.submit(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, barrier, threadsCounter));
         }
         for (int i = 0; i < THIEVES; i++) {
             service.submit(new ThiefThread(new Thief(), home, semaphore, HOSTS, barrier, threadsCounter));
         }
+        service.submit(task);
         service.shutdown();
         service.awaitTermination(3, TimeUnit.MINUTES);
         long endingTime = System.currentTimeMillis();
