@@ -6,8 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,15 +15,15 @@ public class HostThread implements Runnable {
     private Host host;
     private Home home;
     private Semaphore semaphore;
-    private CyclicBarrier barrier;
+    private CountDownLatch latch;
     private AtomicInteger counter;
     private static Logger logger = LogManager.getLogger(HostThread.class);
 
 
-    public HostThread(Host host, Home home, Semaphore semaphore, CyclicBarrier barrier, AtomicInteger counter) {
+    public HostThread(Host host, Home home, Semaphore semaphore, CountDownLatch latch, AtomicInteger counter) {
         this.host = Objects.requireNonNull(host);
         this.semaphore = Objects.requireNonNull(semaphore);
-        this.barrier = Objects.requireNonNull(barrier);
+        this.latch = latch;
         this.counter = Objects.requireNonNull(counter);
         this.home = Objects.requireNonNull(home);
     }
@@ -32,10 +31,9 @@ public class HostThread implements Runnable {
     @Override
     public void run() {
         try {
-            barrier.await();
+            latch.countDown();
             putItems();
-            barrier.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
+        } catch (InterruptedException e) {
             logger.warn(e);
         }
     }

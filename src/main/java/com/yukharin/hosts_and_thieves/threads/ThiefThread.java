@@ -6,8 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,16 +16,16 @@ public class ThiefThread implements Runnable {
     private Thief thief;
     private Home home;
     private Semaphore semaphore;
-    private CyclicBarrier barrier;
+    private CountDownLatch latch;
     private AtomicInteger counter;
     private static Logger logger = LogManager.getLogger(ThiefThread.class);
 
 
-    public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CyclicBarrier barrier, AtomicInteger counter) {
+    public ThiefThread(Thief thief, Home home, Semaphore semaphore, int permits, CountDownLatch latch, AtomicInteger counter) {
         this.thief = Objects.requireNonNull(thief);
         this.home = Objects.requireNonNull(home);
         this.semaphore = Objects.requireNonNull(semaphore);
-        this.barrier = Objects.requireNonNull(barrier);
+        this.latch = Objects.requireNonNull(latch);
         this.counter = Objects.requireNonNull(counter);
         this.permits = permits;
     }
@@ -34,10 +33,9 @@ public class ThiefThread implements Runnable {
     @Override
     public void run() {
         try {
-            barrier.await();
+            latch.countDown();
             stealAll();
-            barrier.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
+        } catch (InterruptedException e) {
             logger.warn(e);
         }
     }
