@@ -23,7 +23,7 @@ public class HostThread implements Runnable {
     public HostThread(Host host, Home home, Semaphore semaphore, CountDownLatch latch, AtomicInteger counter) {
         this.host = Objects.requireNonNull(host);
         this.semaphore = Objects.requireNonNull(semaphore);
-        this.latch = latch;
+        this.latch = Objects.requireNonNull(latch);
         this.counter = Objects.requireNonNull(counter);
         this.home = Objects.requireNonNull(home);
     }
