@@ -45,7 +45,6 @@ public class Main {
         for (Runnable runnable : threads) {
             service.submit(runnable);
         }
-        latch.await();
         service.shutdown();
         service.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
         Utils.printInfo(home);

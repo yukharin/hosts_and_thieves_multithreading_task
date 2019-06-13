@@ -32,6 +32,7 @@ public class HostThread implements Runnable {
     public void run() {
         try {
             latch.countDown();
+            latch.await();
             putItems();
         } catch (InterruptedException e) {
             logger.warn(e);
