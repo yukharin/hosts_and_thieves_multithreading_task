@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 
     // Numeric constants
-    private static final int HOSTS = 30;
+    private static final int HOSTS = 200;
     private static final int THIEVES = 100;
     private static final int WEIGHT_LIMIT = 100;
     private static final int ITEMS_PER_HOST = 10;
