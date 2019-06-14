@@ -1,6 +1,6 @@
 package com.yukharin.hosts_and_thieves.entities;
 
-import com.yukharin.hosts_and_thieves.utils.Utils;
+import com.yukharin.hosts_and_thieves.utils.UtilityMethods;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +16,7 @@ public final class Host {
     private List<Item> items;
 
     public Host(final int count) {
-        this.items = Objects.requireNonNull(Utils.generateItems(count));
+        this.items = Objects.requireNonNull(UtilityMethods.generateItems(count));
         generateAggregationValues(items);
     }
 

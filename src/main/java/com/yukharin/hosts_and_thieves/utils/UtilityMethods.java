@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Utils {
+public class UtilityMethods {
+
+
 
     private static final int LOWER_WEIGHT = 5;
     private static final int UPPER_WEIGHT = 30;
     private static final int LOWER_VALUE = 15;
     private static final int UPPER_VALUE = 150;
 
-    private Utils() {
+    private UtilityMethods() {
     }
 
     public static List<Item> generateItems(final int count) {
