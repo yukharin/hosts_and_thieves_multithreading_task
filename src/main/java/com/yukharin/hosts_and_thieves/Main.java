@@ -18,24 +18,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 
     // Numeric constants
-    private static final int HOSTS = 100;
+    private static final int HOSTS = 30;
     private static final int THIEVES = 100;
     private static final int WEIGHT_LIMIT = 100;
     private static final int ITEMS_PER_HOST = 10;
     private static final int TIMEOUT = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
 
-    // Semaphore, CountDownLatch and AtomicInteger counter
+    // Semaphore, Phaser and AtomicInteger counter
     private static final Semaphore semaphore = new Semaphore(HOSTS);
     private static final AtomicInteger threadsCounter = new AtomicInteger();
     private static final Phaser phaser = new Phaser(TOTAL_THREADS);
 
-    // An Instance of a home class, List of threads and pool of threads
+    // An Instance of a Home class, List of threads and pool of threads
     private static final Home home = new Home();
     private static final List<Runnable> allThreads = new ArrayList<>(TOTAL_THREADS);
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(TOTAL_THREADS);
 
-    // An Instance of a logger to log some useful information
+    // An Instance of a Logger to log some useful information
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     private Main() {
@@ -68,8 +68,8 @@ public class Main {
 
         final long endingTime = System.currentTimeMillis();
 
-        // Printing perfomance of an application
-        logger.info("Perfomance: " + (endingTime - startingTime) + " millis");
+        // Printing performance of an application
+        logger.info("Performance: " + (endingTime - startingTime) + " millis");
     }
 
     private static void initHosts(final int hosts) {

@@ -16,9 +16,9 @@ public class Utils {
     private Utils() {
     }
 
-    public static List<Item> generateItems(int count) {
-        List<Item> items = new ArrayList<>(count);
-        Random random = new Random();
+    public static List<Item> generateItems(final int count) {
+        final List<Item> items = new ArrayList<>(count);
+        final Random random = new Random();
         for (int i = 0; i < count; i++) {
             int weight = LOWER_WEIGHT + random.nextInt(UPPER_WEIGHT);
             int value = LOWER_VALUE + random.nextInt(UPPER_VALUE);
