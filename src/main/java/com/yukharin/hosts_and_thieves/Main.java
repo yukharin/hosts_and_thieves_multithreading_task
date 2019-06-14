@@ -4,8 +4,8 @@ import com.yukharin.hosts_and_thieves.entities.Bag;
 import com.yukharin.hosts_and_thieves.entities.Home;
 import com.yukharin.hosts_and_thieves.entities.Host;
 import com.yukharin.hosts_and_thieves.entities.Thief;
-import com.yukharin.hosts_and_thieves.threads.HostThread;
-import com.yukharin.hosts_and_thieves.threads.ThiefThread;
+import com.yukharin.hosts_and_thieves.threads.HostLockThread;
+import com.yukharin.hosts_and_thieves.threads.ThiefLockThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,22 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class Main {
 
     // Numeric constants
-    private static final int HOSTS = 200;
-    private static final int THIEVES = 100;
+    private static final int HOSTS = 100;
+    private static final int THIEVES = 50;
     private static final int WEIGHT_LIMIT = 100;
     private static final int ITEMS_PER_HOST = 10;
     private static final int TIMEOUT = 3;
     private static final int TOTAL_THREADS = HOSTS + THIEVES;
 
-    // Semaphore, Phaser and AtomicInteger counter
-    private static final Semaphore semaphore = new Semaphore(HOSTS);
+    // Phaser and AtomicInteger counter
     private static final AtomicInteger threadsCounter = new AtomicInteger();
     private static final Phaser phaser = new Phaser(TOTAL_THREADS);
+
+    // Semaphore and ReadWriteLock
+    // Make a choice depends on the synchronization type you want
+    private static final Semaphore semaphore = new Semaphore(HOSTS);
+    private static final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final Lock lockHost = lock.readLock();
+    private static final Lock lockThief = lock.writeLock();
 
     // An Instance of a Home class, List of threads and pool of threads
     private static final Home home = new Home();
@@ -74,13 +83,13 @@ public class Main {
 
     private static void initHosts(final int hosts) {
         for (int i = 0; i < hosts; i++) {
-            allThreads.add(new HostThread(new Host(ITEMS_PER_HOST), home, semaphore, threadsCounter, phaser));
+            allThreads.add(new HostLockThread(new Host(ITEMS_PER_HOST), home, threadsCounter, phaser, lockHost));
         }
     }
 
     private static void initThieves(final int thieves) {
         for (int i = 0; i < THIEVES; i++) {
-            allThreads.add(new ThiefThread(new Thief(WEIGHT_LIMIT), home, semaphore, HOSTS, threadsCounter, phaser));
+            allThreads.add(new ThiefLockThread(new Thief(WEIGHT_LIMIT), home, threadsCounter, phaser, lockThief));
         }
     }
 

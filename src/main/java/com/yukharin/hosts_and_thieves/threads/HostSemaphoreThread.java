@@ -10,16 +10,16 @@ import java.util.concurrent.Phaser;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class HostThread implements Runnable {
+public final class HostSemaphoreThread implements Runnable {
 
     private final Host host;
     private final Home home;
     private final Semaphore semaphore;
     private final AtomicInteger counter;
     private final Phaser phaser;
-    private static final Logger logger = LogManager.getLogger(HostThread.class);
+    private static final Logger logger = LogManager.getLogger(HostSemaphoreThread.class);
 
-    public HostThread(final Host host, final Home home, final Semaphore semaphore, final AtomicInteger counter, final Phaser phaser) {
+    public HostSemaphoreThread(final Host host, final Home home, final AtomicInteger counter, final Phaser phaser, final Semaphore semaphore) {
         this.host = Objects.requireNonNull(host);
         this.semaphore = Objects.requireNonNull(semaphore);
         this.phaser = Objects.requireNonNull(phaser);
@@ -62,6 +62,5 @@ public final class HostThread implements Runnable {
             semaphore.release();
         }
     }
-
 
 }

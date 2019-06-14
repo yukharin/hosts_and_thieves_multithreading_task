@@ -7,64 +7,59 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.Phaser;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
 
-public final class ThiefThread implements Runnable {
+public class ThiefLockThread implements Runnable {
 
-
+    private static final Logger logger = LogManager.getLogger(ThiefSemaphoreThread.class);
     private final Thief thief;
     private final Home home;
-    private final Semaphore semaphore;
+    private final Lock lock;
     private final AtomicInteger counter;
-    private final int permits;
     private final Phaser phaser;
-    private static final Logger logger = LogManager.getLogger(ThiefThread.class);
 
 
-    public ThiefThread(final Thief thief, final Home home, final Semaphore semaphore, final int permits, final AtomicInteger counter, final Phaser phaser) {
+    public ThiefLockThread(final Thief thief, final Home home, final AtomicInteger counter, final Phaser phaser, final Lock lock) {
         this.thief = Objects.requireNonNull(thief);
         this.home = Objects.requireNonNull(home);
-        this.semaphore = Objects.requireNonNull(semaphore);
+        this.lock = Objects.requireNonNull(lock);
         this.counter = Objects.requireNonNull(counter);
         this.phaser = Objects.requireNonNull(phaser);
-        this.permits = permits;
     }
 
     @Override
     public void run() {
-        try {
-            phaser.arriveAndAwaitAdvance();
-            stealAll();
-        } catch (InterruptedException e) {
-            logger.warn(e);
-        }
+        phaser.arriveAndAwaitAdvance();
+        stealAll();
     }
 
 
-    private void stealIncrementally() throws InterruptedException {
+    private void stealIncrementally() {
         while (!home.isEmpty() && !thief.isBagFull()) {
-            semaphore.acquire(permits);
+            lock.lock();
             try {
                 counter.incrementAndGet();
                 thief.steal(home);
                 logger.info("Thieves inside home: " + counter.intValue());
                 counter.decrementAndGet();
             } finally {
-                semaphore.release(permits);
+                lock.unlock();
             }
         }
     }
 
-    private void stealAll() throws InterruptedException {
-        semaphore.acquire(permits);
+    private void stealAll() {
+        lock.lock();
         try {
             counter.incrementAndGet();
             thief.stealAll(home);
             logger.info("Thieves inside home: " + counter.intValue());
             counter.decrementAndGet();
         } finally {
-            semaphore.release(permits);
+            lock.unlock();
         }
     }
+
+
 }
